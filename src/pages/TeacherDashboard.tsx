@@ -1,10 +1,20 @@
+import { useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BookOpen, Users, FileText, TrendingUp, LogOut, Plus } from "lucide-react";
-import { Link } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 
 const TeacherDashboard = () => {
+  const { user, logout, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isAuthenticated || user?.role !== 'teacher') {
+      navigate('/auth');
+    }
+  }, [isAuthenticated, user, navigate]);
   const courses = [
     { id: 1, name: "Mathematics 101", students: 45, activities: 12, avgGrade: 85 },
     { id: 2, name: "Advanced Calculus", students: 32, activities: 10, avgGrade: 88 },
@@ -22,6 +32,8 @@ const TeacherDashboard = () => {
     { name: "Carol Williams", course: "Statistics", grade: 94, engagement: 88 },
   ];
 
+  if (!isAuthenticated) return null;
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -33,9 +45,14 @@ const TeacherDashboard = () => {
             </Link>
             <Badge className="bg-accent text-accent-foreground">Teacher</Badge>
           </div>
-          <Button variant="ghost" size="icon">
-            <LogOut className="h-5 w-5" />
-          </Button>
+          <div className="flex items-center gap-4">
+            <div className="text-right">
+              <p className="text-sm font-medium">{user?.name}</p>
+            </div>
+            <Button variant="ghost" size="icon" onClick={logout}>
+              <LogOut className="h-5 w-5" />
+            </Button>
+          </div>
         </div>
       </header>
 
@@ -43,7 +60,7 @@ const TeacherDashboard = () => {
         {/* Welcome Section */}
         <div className="mb-8 flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold mb-2">Teacher Dashboard</h1>
+            <h1 className="text-3xl font-bold mb-2">Welcome, {user?.name}</h1>
             <p className="text-muted-foreground">Manage your courses and track student progress</p>
           </div>
           <div className="flex gap-3">

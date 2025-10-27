@@ -4,19 +4,29 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { GraduationCap } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { GraduationCap, AlertCircle } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
+import { toast } from "sonner";
 
 const Auth = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    // TODO: Implement authentication logic
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
+    
+    const success = await login(email, password);
+    
+    if (!success) {
+      toast.error("Invalid credentials. Try demo accounts below.");
+    }
+    
+    setIsLoading(false);
   };
 
   return (
@@ -48,7 +58,9 @@ const Auth = () => {
                     <Input 
                       id="signin-email" 
                       type="email" 
-                      placeholder="student@university.edu" 
+                      placeholder="student@demo.com" 
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       required 
                     />
                   </div>
@@ -56,7 +68,9 @@ const Auth = () => {
                     <Label htmlFor="signin-password">Password</Label>
                     <Input 
                       id="signin-password" 
-                      type="password" 
+                      type="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                       required 
                     />
                   </div>
@@ -64,6 +78,19 @@ const Auth = () => {
                     {isLoading ? "Signing in..." : "Sign In"}
                   </Button>
                 </form>
+                
+                <Alert className="mt-4">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertDescription>
+                    <div className="text-sm space-y-1">
+                      <p className="font-semibold">Demo Accounts:</p>
+                      <p>• student@demo.com</p>
+                      <p>• teacher@demo.com</p>
+                      <p>• admin@demo.com</p>
+                      <p className="text-muted-foreground">Password: demo123</p>
+                    </div>
+                  </AlertDescription>
+                </Alert>
               </CardContent>
             </Card>
           </TabsContent>

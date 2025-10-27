@@ -1,10 +1,20 @@
+import { useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Users, BookOpen, GraduationCap, Settings, LogOut, Plus, TrendingUp } from "lucide-react";
-import { Link } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 
 const AdminDashboard = () => {
+  const { user, logout, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isAuthenticated || user?.role !== 'admin') {
+      navigate('/auth');
+    }
+  }, [isAuthenticated, user, navigate]);
   const stats = [
     { label: "Total Students", value: "1,234", icon: Users, color: "primary" },
     { label: "Total Teachers", value: "89", icon: GraduationCap, color: "accent" },
@@ -24,6 +34,8 @@ const AdminDashboard = () => {
     { name: "Email Notifications", status: "active", description: "Automated alerts configured" },
   ];
 
+  if (!isAuthenticated) return null;
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -36,10 +48,13 @@ const AdminDashboard = () => {
             <Badge className="bg-warning text-warning-foreground">Admin</Badge>
           </div>
           <div className="flex items-center gap-3">
+            <div className="text-right">
+              <p className="text-sm font-medium">{user?.name}</p>
+            </div>
             <Button variant="ghost" size="icon">
               <Settings className="h-5 w-5" />
             </Button>
-            <Button variant="ghost" size="icon">
+            <Button variant="ghost" size="icon" onClick={logout}>
               <LogOut className="h-5 w-5" />
             </Button>
           </div>
@@ -50,7 +65,7 @@ const AdminDashboard = () => {
         {/* Welcome Section */}
         <div className="mb-8 flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold mb-2">Admin Dashboard</h1>
+            <h1 className="text-3xl font-bold mb-2">Welcome, {user?.name}</h1>
             <p className="text-muted-foreground">System overview and management</p>
           </div>
           <Button>

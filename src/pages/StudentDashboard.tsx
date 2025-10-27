@@ -1,11 +1,21 @@
+import { useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { BookOpen, Bell, Award, TrendingUp, LogOut } from "lucide-react";
-import { Link } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 
 const StudentDashboard = () => {
+  const { user, logout, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isAuthenticated || user?.role !== 'student') {
+      navigate('/auth');
+    }
+  }, [isAuthenticated, user, navigate]);
   const courses = [
     { id: 1, name: "Mathematics 101", teacher: "Dr. Smith", grade: 92, progress: 75, status: "active" },
     { id: 2, name: "Physics 201", teacher: "Prof. Johnson", grade: 88, progress: 60, status: "active" },
@@ -23,6 +33,8 @@ const StudentDashboard = () => {
     { id: 2, message: "Grade updated for Physics Lab Report", time: "1 day ago" },
   ];
 
+  if (!isAuthenticated) return null;
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -34,16 +46,21 @@ const StudentDashboard = () => {
             </Link>
             <Badge variant="secondary">Student</Badge>
           </div>
-          <Button variant="ghost" size="icon">
-            <LogOut className="h-5 w-5" />
-          </Button>
+          <div className="flex items-center gap-4">
+            <div className="text-right">
+              <p className="text-sm font-medium">{user?.name}</p>
+            </div>
+            <Button variant="ghost" size="icon" onClick={logout}>
+              <LogOut className="h-5 w-5" />
+            </Button>
+          </div>
         </div>
       </header>
 
       <div className="container mx-auto px-4 py-8">
         {/* Welcome Section */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Welcome back, Student!</h1>
+          <h1 className="text-3xl font-bold mb-2">Welcome back, {user?.name}!</h1>
           <p className="text-muted-foreground">Track your courses and academic progress</p>
         </div>
 
