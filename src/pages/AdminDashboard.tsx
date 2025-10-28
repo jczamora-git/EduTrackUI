@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Users, BookOpen, GraduationCap, Settings, LogOut, Plus, TrendingUp } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { RoleBasedNav } from "@/components/RoleBasedNav";
 
 const AdminDashboard = () => {
   const { user, logout, isAuthenticated } = useAuth();
@@ -37,10 +38,12 @@ const AdminDashboard = () => {
   if (!isAuthenticated) return null;
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="border-b border-border bg-card">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+    <div className="flex min-h-screen bg-background">
+      <RoleBasedNav />
+      <div className="flex-1">
+        {/* Header */}
+        <header className="border-b border-border bg-card">
+          <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Link to="/" className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
               EduTrack
@@ -237,6 +240,7 @@ const AdminDashboard = () => {
             </Card>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );
