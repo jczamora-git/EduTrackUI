@@ -4,7 +4,13 @@ import { useAuth } from "@/hooks/useAuth";
 import { RoleBasedNav } from "@/components/RoleBasedNav";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { CreditCard, TrendingUp } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { CreditCard, TrendingUp, Plus, DollarSign } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 const Payments = () => {
   const { user, isAuthenticated } = useAuth();
@@ -16,10 +22,21 @@ const Payments = () => {
     }
   }, [isAuthenticated, user, navigate]);
 
-  const payments = [
-    { student: "Sarah Davis", amount: "$500", type: "Tuition", status: "paid", date: "2025-01-15" },
-    { student: "Emily Brown", amount: "$500", type: "Tuition", status: "pending", date: "2025-01-10" },
-    { student: "Mike Johnson", amount: "$50", type: "Lab Fee", status: "paid", date: "2025-01-12" },
+  const paymentTypes = [
+    { name: "Tuition Fee", amount: "$5,000", semester: "Fall 2024" },
+    { name: "Laboratory Fee", amount: "$500", semester: "Fall 2024" },
+    { name: "Library Fee", amount: "$200", semester: "Fall 2024" },
+  ];
+
+  const paidStudents = [
+    { id: "2024001", name: "Sarah Johnson", paymentType: "Tuition Fee", amount: "$5,000", date: "2025-01-15", status: "paid" },
+    { id: "2024002", name: "Michael Chen", paymentType: "Tuition Fee", amount: "$5,000", date: "2025-01-14", status: "paid" },
+    { id: "2024003", name: "Emily Rodriguez", paymentType: "Laboratory Fee", amount: "$500", date: "2025-01-12", status: "paid" },
+  ];
+
+  const pendingPayments = [
+    { id: "2024004", name: "David Martinez", paymentType: "Tuition Fee", amount: "$5,000", dueDate: "2025-01-20" },
+    { id: "2024005", name: "Lisa Wong", paymentType: "Laboratory Fee", amount: "$500", dueDate: "2025-01-18" },
   ];
 
   if (!isAuthenticated) return null;
@@ -28,9 +45,47 @@ const Payments = () => {
     <div className="flex min-h-screen bg-background">
       <RoleBasedNav />
       <div className="flex-1 p-8">
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold mb-2">Payment Management</h1>
-          <p className="text-muted-foreground">Track and manage student payments</p>
+        <div className="mb-6 flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold mb-2">Payment Management</h1>
+            <p className="text-muted-foreground">Manage payment types and track student payments</p>
+          </div>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button>
+                <Plus className="h-4 w-4 mr-2" />
+                Add Payment Type
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Create Payment Type</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div>
+                  <Label htmlFor="payment-name">Payment Name</Label>
+                  <Input id="payment-name" placeholder="e.g., Tuition Fee" />
+                </div>
+                <div>
+                  <Label htmlFor="amount">Amount</Label>
+                  <Input id="amount" type="number" placeholder="5000" />
+                </div>
+                <div>
+                  <Label htmlFor="semester">Semester</Label>
+                  <Select>
+                    <SelectTrigger id="semester">
+                      <SelectValue placeholder="Select semester" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="fall-2024">Fall 2024</SelectItem>
+                      <SelectItem value="spring-2025">Spring 2025</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <Button className="w-full">Create Payment Type</Button>
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6 mb-6">
@@ -77,37 +132,102 @@ const Payments = () => {
           </Card>
         </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Recent Payments</CardTitle>
-            <CardDescription>Latest payment transactions</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {payments.map((payment, index) => (
-                <div
-                  key={index}
-                  className="flex items-center justify-between p-4 border border-border rounded-lg"
-                >
-                  <div>
-                    <p className="font-medium">{payment.student}</p>
-                    <p className="text-sm text-muted-foreground">{payment.type}</p>
+        <div className="grid gap-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <DollarSign className="h-5 w-5" />
+                Payment Types
+              </CardTitle>
+              <CardDescription>Manage payment types and amounts</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {paymentTypes.map((type, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center justify-between p-4 border border-border rounded-lg"
+                  >
+                    <div>
+                      <p className="font-medium">{type.name}</p>
+                      <p className="text-sm text-muted-foreground">{type.semester}</p>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <p className="font-semibold text-lg">{type.amount}</p>
+                      <Button variant="outline" size="sm">Edit</Button>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <p className="font-semibold">{payment.amount}</p>
-                    <Badge
-                      variant={payment.status === "paid" ? "default" : "secondary"}
-                      className={payment.status === "paid" ? "bg-success text-success-foreground" : ""}
-                    >
-                      {payment.status}
-                    </Badge>
-                    <p className="text-sm text-muted-foreground">{payment.date}</p>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Paid Students</CardTitle>
+              <CardDescription>Students who have completed their payments</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Student ID</TableHead>
+                    <TableHead>Name</TableHead>
+                    <TableHead>Payment Type</TableHead>
+                    <TableHead>Amount</TableHead>
+                    <TableHead>Date</TableHead>
+                    <TableHead>Status</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {paidStudents.map((student) => (
+                    <TableRow key={student.id}>
+                      <TableCell>{student.id}</TableCell>
+                      <TableCell className="font-medium">{student.name}</TableCell>
+                      <TableCell>{student.paymentType}</TableCell>
+                      <TableCell>{student.amount}</TableCell>
+                      <TableCell>{student.date}</TableCell>
+                      <TableCell>
+                        <Badge className="bg-success text-success-foreground">
+                          {student.status}
+                        </Badge>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Pending Payments</CardTitle>
+              <CardDescription>Students with outstanding payments</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {pendingPayments.map((payment) => (
+                  <div
+                    key={payment.id}
+                    className="flex items-center justify-between p-4 border border-border rounded-lg"
+                  >
+                    <div>
+                      <p className="font-medium">{payment.name}</p>
+                      <p className="text-sm text-muted-foreground">
+                        ID: {payment.id} | {payment.paymentType}
+                      </p>
+                      <p className="text-xs text-muted-foreground">Due: {payment.dueDate}</p>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <p className="font-semibold text-lg">{payment.amount}</p>
+                      <Badge variant="secondary">Pending</Badge>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );

@@ -24,11 +24,10 @@ export const RoleBasedNav = () => {
     { to: "/admin", icon: BarChart3, label: "Dashboard" },
     { to: "/admin/users", icon: Users, label: "Manage Users" },
     { to: "/admin/grading", icon: Award, label: "Grading System" },
-    { to: "/admin/assignments", icon: ClipboardList, label: "Subject Assignment" },
+    { to: "/admin/assignments", icon: ClipboardList, label: "Teacher & Subject Management" },
     { to: "/admin/announcements", icon: Bell, label: "Announcements" },
     { to: "/admin/payments", icon: CreditCard, label: "Payments" },
     { to: "/admin/pdf", icon: FileText, label: "PDF Generation" },
-    { to: "/admin/enrollment", icon: UserPlus, label: "Enrollment" },
   ];
 
   const teacherLinks = [

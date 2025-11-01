@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Plus, BookOpen } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const Courses = () => {
   const { user, isAuthenticated } = useAuth();
@@ -22,9 +23,9 @@ const Courses = () => {
   }, [isAuthenticated, user, navigate]);
 
   const courses = [
-    { title: "Mathematics 101", section: "Grade 10-A", students: 28, status: "approved" },
-    { title: "Advanced Math", section: "Grade 11-A", students: 25, status: "approved" },
-    { title: "Geometry", section: "Grade 10-B", students: 30, status: "pending" },
+    { id: 1, title: "Introduction to Computer Science", code: "CS101", section: "Section A", students: 35, status: "approved" },
+    { id: 2, title: "Data Structures", code: "CS201", section: "Section B", students: 28, status: "approved" },
+    { id: 3, title: "Web Development", code: "CS301", section: "Section A", students: 30, status: "pending" },
   ];
 
   if (!isAuthenticated) return null;
@@ -52,15 +53,32 @@ const Courses = () => {
               <div className="space-y-4">
                 <div>
                   <Label htmlFor="course-title">Course Title</Label>
-                  <Input id="course-title" placeholder="Enter course title" />
+                  <Input id="course-title" placeholder="e.g., Introduction to Programming" />
+                </div>
+                <div>
+                  <Label htmlFor="course-code">Course Code</Label>
+                  <Input id="course-code" placeholder="e.g., CS101" />
+                </div>
+                <div>
+                  <Label htmlFor="section">Section</Label>
+                  <Select>
+                    <SelectTrigger id="section">
+                      <SelectValue placeholder="Select section" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="section-a">Section A</SelectItem>
+                      <SelectItem value="section-b">Section B</SelectItem>
+                      <SelectItem value="section-c">Section C</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label htmlFor="credits">Credits</Label>
+                  <Input id="credits" type="number" placeholder="3" min="1" max="6" />
                 </div>
                 <div>
                   <Label htmlFor="description">Description</Label>
                   <Textarea id="description" placeholder="Course description" rows={3} />
-                </div>
-                <div>
-                  <Label htmlFor="section">Section</Label>
-                  <Input id="section" placeholder="e.g., Grade 10-A" />
                 </div>
                 <p className="text-sm text-muted-foreground">
                   Note: New courses require admin approval
@@ -72,8 +90,8 @@ const Courses = () => {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {courses.map((course, index) => (
-            <Card key={index} className="hover:shadow-lg transition-shadow">
+          {courses.map((course) => (
+            <Card key={course.id} className="hover:shadow-lg transition-shadow">
               <CardHeader>
                 <div className="flex items-start justify-between">
                   <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-2">
@@ -87,7 +105,7 @@ const Courses = () => {
                   </Badge>
                 </div>
                 <CardTitle>{course.title}</CardTitle>
-                <CardDescription>{course.section}</CardDescription>
+                <CardDescription>{course.code} - {course.section}</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
@@ -95,7 +113,11 @@ const Courses = () => {
                     <span className="text-muted-foreground">Students</span>
                     <span className="font-semibold">{course.students}</span>
                   </div>
-                  <Button variant="outline" className="w-full">
+                  <Button 
+                    variant="outline" 
+                    className="w-full"
+                    onClick={() => navigate(`/teacher/courses/${course.id}`)}
+                  >
                     Manage Course
                   </Button>
                 </div>

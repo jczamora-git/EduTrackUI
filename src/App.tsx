@@ -18,16 +18,18 @@ import SubjectAssignment from "./pages/admin/SubjectAssignment";
 import Announcements from "./pages/admin/Announcements";
 import Payments from "./pages/admin/Payments";
 import PDFGeneration from "./pages/admin/PDFGeneration";
-import Enrollment from "./pages/admin/Enrollment";
+
 
 // Teacher pages
 import Courses from "./pages/teacher/Courses";
+import CourseManagement from "./pages/teacher/CourseManagement";
 import Activities from "./pages/teacher/Activities";
 import StudentManagement from "./pages/teacher/StudentManagement";
 import GradeInput from "./pages/teacher/GradeInput";
 
 // Student pages
 import MyCourses from "./pages/student/MyCourses";
+import CourseDetails from "./pages/student/CourseDetails";
 import MyActivities from "./pages/student/MyActivities";
 import MyGrades from "./pages/student/MyGrades";
 import MyProgress from "./pages/student/MyProgress";
@@ -67,7 +69,8 @@ const App = () => (
             <Route path="/admin/announcements" element={<Announcements />} />
             <Route path="/admin/payments" element={<Payments />} />
             <Route path="/admin/pdf" element={<PDFGeneration />} />
-            <Route path="/admin/enrollment" element={<Enrollment />} />
+            <Route path="/student/courses/:courseId" element={<CourseDetails />} />
+            <Route path="/teacher/courses/:courseId" element={<CourseManagement />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

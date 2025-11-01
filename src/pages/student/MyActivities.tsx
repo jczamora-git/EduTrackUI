@@ -18,9 +18,10 @@ const MyActivities = () => {
   }, [isAuthenticated, user, navigate]);
 
   const activities = [
-    { title: "Quiz 1: Algebra", course: "Mathematics 101", dueDate: "2025-01-25", status: "pending", score: null },
-    { title: "Science Lab Report", course: "Science 101", dueDate: "2025-01-22", status: "submitted", score: "45/50" },
-    { title: "Essay: Shakespeare", course: "English Literature", dueDate: "2025-01-20", status: "graded", score: "88/100" },
+    { title: "Programming Assignment 1", course: "CS101", type: "Assignment", dueDate: "2025-01-25", status: "pending", score: null },
+    { title: "Midterm Exam", course: "MATH101", type: "Exam", dueDate: "2025-01-22", status: "graded", score: "85/100" },
+    { title: "Research Paper", course: "ENG101", type: "Project", dueDate: "2025-01-20", status: "graded", score: "92/100" },
+    { title: "Quiz 1: Data Structures", course: "CS101", type: "Quiz", dueDate: "2025-01-18", status: "graded", score: "45/50" },
   ];
 
   if (!isAuthenticated) return null;
@@ -63,7 +64,9 @@ const MyActivities = () => {
                     </div>
                     <div>
                       <p className="font-medium">{activity.title}</p>
-                      <p className="text-sm text-muted-foreground">{activity.course}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {activity.course} - {activity.type}
+                      </p>
                       <p className="text-xs text-muted-foreground">Due: {activity.dueDate}</p>
                     </div>
                   </div>

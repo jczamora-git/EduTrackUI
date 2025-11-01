@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
+import { CheckCircle, XCircle } from "lucide-react";
 
 const SubjectAssignment = () => {
   const { user, isAuthenticated } = useAuth();
@@ -19,9 +20,14 @@ const SubjectAssignment = () => {
   }, [isAuthenticated, user, navigate]);
 
   const assignments = [
-    { teacher: "John Smith", subject: "Mathematics", section: "Grade 10-A", students: 28 },
-    { teacher: "Mike Wilson", subject: "Science", section: "Grade 10-B", students: 30 },
-    { teacher: "John Smith", subject: "Physics", section: "Grade 11-A", students: 25 },
+    { teacher: "Dr. James Anderson", subject: "Computer Science", section: "Section A", students: 35 },
+    { teacher: "Prof. Maria Garcia", subject: "Mathematics", section: "Section B", students: 30 },
+    { teacher: "Dr. Robert Chen", subject: "English", section: "Section A", students: 28 },
+  ];
+
+  const pendingStudents = [
+    { student: "Sarah Johnson", teacher: "Dr. James Anderson", subject: "Computer Science", section: "Section A", date: "2025-01-20" },
+    { student: "Michael Chen", teacher: "Prof. Maria Garcia", subject: "Mathematics", section: "Section B", date: "2025-01-19" },
   ];
 
   if (!isAuthenticated) return null;
@@ -31,8 +37,8 @@ const SubjectAssignment = () => {
       <RoleBasedNav />
       <div className="flex-1 p-8">
         <div className="mb-6">
-          <h1 className="text-3xl font-bold mb-2">Subject & Section Assignment</h1>
-          <p className="text-muted-foreground">Assign subjects and sections to teachers and students</p>
+          <h1 className="text-3xl font-bold mb-2">Teacher & Subject Management</h1>
+          <p className="text-muted-foreground">Assign subjects and sections to teachers, and approve student additions</p>
         </div>
 
         <div className="grid gap-6">
@@ -62,9 +68,10 @@ const SubjectAssignment = () => {
                       <SelectValue placeholder="Select subject" />
                     </SelectTrigger>
                     <SelectContent>
+                      <SelectItem value="cs">Computer Science</SelectItem>
                       <SelectItem value="math">Mathematics</SelectItem>
-                      <SelectItem value="science">Science</SelectItem>
                       <SelectItem value="english">English</SelectItem>
+                      <SelectItem value="physics">Physics</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -75,9 +82,9 @@ const SubjectAssignment = () => {
                       <SelectValue placeholder="Select section" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="10a">Grade 10-A</SelectItem>
-                      <SelectItem value="10b">Grade 10-B</SelectItem>
-                      <SelectItem value="11a">Grade 11-A</SelectItem>
+                      <SelectItem value="section-a">Section A</SelectItem>
+                      <SelectItem value="section-b">Section B</SelectItem>
+                      <SelectItem value="section-c">Section C</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -112,6 +119,49 @@ const SubjectAssignment = () => {
                     </div>
                   </div>
                 ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Pending Student Approvals</CardTitle>
+              <CardDescription>Approve or reject teacher requests to add students</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {pendingStudents.length > 0 ? (
+                  pendingStudents.map((request, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between p-4 border border-border rounded-lg"
+                    >
+                      <div>
+                        <p className="font-medium">{request.student}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {request.subject} - {request.section}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          Requested by: {request.teacher} | {request.date}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Button size="sm" variant="outline" className="text-success">
+                          <CheckCircle className="h-4 w-4 mr-1" />
+                          Approve
+                        </Button>
+                        <Button size="sm" variant="outline" className="text-destructive">
+                          <XCircle className="h-4 w-4 mr-1" />
+                          Reject
+                        </Button>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-center text-muted-foreground py-8">
+                    No pending approval requests
+                  </p>
+                )}
               </div>
             </CardContent>
           </Card>

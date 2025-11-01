@@ -18,9 +18,9 @@ const MyCourses = () => {
   }, [isAuthenticated, user, navigate]);
 
   const courses = [
-    { title: "Mathematics 101", teacher: "John Smith", section: "Grade 10-A", progress: 75, grade: "A" },
-    { title: "Science 101", teacher: "Dr. Sarah Lee", section: "Grade 10-A", progress: 82, grade: "A-" },
-    { title: "English Literature", teacher: "Ms. Emily Clark", section: "Grade 10-A", progress: 68, grade: "B+" },
+    { id: 1, title: "Introduction to Computer Science", code: "CS101", teacher: "Dr. James Anderson", section: "Section A", credits: 3, grade: "A" },
+    { id: 2, title: "Calculus I", code: "MATH101", teacher: "Prof. Maria Garcia", section: "Section B", credits: 4, grade: "A-" },
+    { id: 3, title: "English Composition", code: "ENG101", teacher: "Dr. Robert Chen", section: "Section A", credits: 3, grade: "B+" },
   ];
 
   if (!isAuthenticated) return null;
@@ -35,33 +35,41 @@ const MyCourses = () => {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {courses.map((course, index) => (
-            <Card key={index} className="hover:shadow-lg transition-shadow">
+          {courses.map((course) => (
+            <Card key={course.id} className="hover:shadow-lg transition-shadow">
               <CardHeader>
                 <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-2">
                   <BookOpen className="h-6 w-6 text-primary" />
                 </div>
                 <CardTitle>{course.title}</CardTitle>
-                <CardDescription className="flex items-center gap-2">
-                  <User className="h-4 w-4" />
-                  {course.teacher}
-                </CardDescription>
+                <CardDescription>{course.code}</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">Instructor</span>
+                    <span className="font-medium text-right flex items-center gap-1">
+                      <User className="h-3 w-3" />
+                      {course.teacher}
+                    </span>
+                  </div>
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-muted-foreground">Section</span>
                     <Badge variant="secondary">{course.section}</Badge>
                   </div>
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground">Progress</span>
-                    <span className="font-semibold">{course.progress}%</span>
+                    <span className="text-muted-foreground">Credits</span>
+                    <span className="font-semibold">{course.credits}</span>
                   </div>
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-muted-foreground">Current Grade</span>
                     <Badge className="bg-success text-success-foreground">{course.grade}</Badge>
                   </div>
-                  <Button variant="outline" className="w-full">
+                  <Button 
+                    variant="outline" 
+                    className="w-full"
+                    onClick={() => navigate(`/student/courses/${course.id}`)}
+                  >
                     View Details
                   </Button>
                 </div>
