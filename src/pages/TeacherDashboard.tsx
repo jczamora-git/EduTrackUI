@@ -5,10 +5,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { BookOpen, Users, FileText, TrendingUp, LogOut, Plus } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
-import { RoleBasedNav } from "@/components/RoleBasedNav";
+import { DashboardLayout } from "@/components/DashboardLayout";
 
 const TeacherDashboard = () => {
-  const { user, logout, isAuthenticated } = useAuth();
+  const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -36,12 +36,10 @@ const TeacherDashboard = () => {
   if (!isAuthenticated) return null;
 
   return (
-    <div className="flex min-h-screen bg-background">
-      <RoleBasedNav />
-      <div className="flex-1">
-        {/* Header */}
-        <header className="border-b border-border bg-card">
-          <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+    <DashboardLayout>
+      {/* Header */}
+      <header className="border-b border-border bg-card">
+        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Link to="/" className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
               EduTrack
@@ -52,9 +50,6 @@ const TeacherDashboard = () => {
             <div className="text-right">
               <p className="text-sm font-medium">{user?.name}</p>
             </div>
-            <Button variant="ghost" size="icon" onClick={logout}>
-              <LogOut className="h-5 w-5" />
-            </Button>
           </div>
         </div>
       </header>
@@ -262,8 +257,7 @@ const TeacherDashboard = () => {
           </div>
         </div>
       </div>
-      </div>
-    </div>
+    </DashboardLayout>
   );
 };
 

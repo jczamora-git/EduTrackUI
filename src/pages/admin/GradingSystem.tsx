@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { RoleBasedNav } from "@/components/RoleBasedNav";
+import { DashboardLayout } from "@/components/DashboardLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -21,9 +21,8 @@ const GradingSystem = () => {
   if (!isAuthenticated) return null;
 
   return (
-    <div className="flex min-h-screen bg-background">
-      <RoleBasedNav />
-      <div className="flex-1 p-8">
+    <DashboardLayout>
+      <div className="p-8">
         <div className="mb-6">
           <h1 className="text-3xl font-bold mb-2">Grading System</h1>
           <p className="text-muted-foreground">Configure unified grading policies</p>
@@ -112,7 +111,7 @@ const GradingSystem = () => {
           </Card>
         </div>
       </div>
-    </div>
+    </DashboardLayout>
   );
 };
 

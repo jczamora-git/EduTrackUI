@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { RoleBasedNav } from "@/components/RoleBasedNav";
+import { DashboardLayout } from "@/components/DashboardLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -34,9 +34,8 @@ const PDFGeneration = () => {
   if (!isAuthenticated) return null;
 
   return (
-    <div className="flex min-h-screen bg-background">
-      <RoleBasedNav />
-      <div className="flex-1 p-8">
+    <DashboardLayout>
+      <div className="p-8">
         <div className="mb-6">
           <h1 className="text-3xl font-bold mb-2">PDF Generation</h1>
           <p className="text-muted-foreground">Generate student grade reports in PDF format</p>
@@ -169,7 +168,7 @@ const PDFGeneration = () => {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </DashboardLayout>
   );
 };
 

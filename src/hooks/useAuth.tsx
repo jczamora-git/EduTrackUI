@@ -27,15 +27,19 @@ const DEMO_USERS: User[] = [
 const DEMO_PASSWORD = 'demo123';
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const storedUser = localStorage.getItem('edutrack_user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+  // Initialize from localStorage synchronously to avoid a race where
+  // components redirect before the stored session is restored (opening
+  // the app in a new tab was causing the session to appear "destroyed").
+  const [user, setUser] = useState<User | null>(() => {
+    try {
+      const stored = localStorage.getItem('edutrack_user');
+      return stored ? (JSON.parse(stored) as User) : null;
+    } catch (e) {
+      console.error('Failed to parse stored user', e);
+      return null;
     }
-  }, []);
+  });
+  const navigate = useNavigate();
 
   const login = async (email: string, password: string): Promise<boolean> => {
     const foundUser = DEMO_USERS.find(u => u.email === email);
@@ -47,13 +51,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // Navigate based on role
       switch (foundUser.role) {
         case 'student':
-          navigate('/student');
+          navigate('/student/dashboard');
           break;
         case 'teacher':
-          navigate('/teacher');
+          navigate('/teacher/dashboard');
           break;
         case 'admin':
-          navigate('/admin');
+          navigate('/admin/dashboard');
           break;
       }
       

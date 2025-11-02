@@ -5,10 +5,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Users, BookOpen, GraduationCap, Settings, LogOut, Plus, TrendingUp } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
-import { RoleBasedNav } from "@/components/RoleBasedNav";
+import { DashboardLayout } from "@/components/DashboardLayout";
 
 const AdminDashboard = () => {
-  const { user, logout, isAuthenticated } = useAuth();
+  const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,32 +38,7 @@ const AdminDashboard = () => {
   if (!isAuthenticated) return null;
 
   return (
-    <div className="flex min-h-screen bg-background">
-      <RoleBasedNav />
-      <div className="flex-1">
-        {/* Header */}
-        <header className="border-b border-border bg-card">
-          <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Link to="/" className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              EduTrack
-            </Link>
-            <Badge className="bg-warning text-warning-foreground">Admin</Badge>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="text-right">
-              <p className="text-sm font-medium">{user?.name}</p>
-            </div>
-            <Button variant="ghost" size="icon">
-              <Settings className="h-5 w-5" />
-            </Button>
-            <Button variant="ghost" size="icon" onClick={logout}>
-              <LogOut className="h-5 w-5" />
-            </Button>
-          </div>
-        </div>
-      </header>
-
+    <DashboardLayout>
       <div className="container mx-auto px-4 py-8">
         {/* Welcome Section */}
         <div className="mb-8 flex items-center justify-between">
@@ -79,21 +54,24 @@ const AdminDashboard = () => {
 
         {/* Stats Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {stats.map((stat, index) => (
-            <Card key={index} className="hover:shadow-lg transition-shadow">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-4">
-                  <div className={`w-12 h-12 rounded-lg bg-${stat.color}/10 flex items-center justify-center`}>
-                    <stat.icon className={`h-6 w-6 text-${stat.color}`} />
+          {stats.map((stat, index) => {
+            const Icon = stat.icon as any;
+            return (
+              <Card key={index} className="hover:shadow-lg transition-shadow">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-4">
+                    <div className={`w-12 h-12 rounded-lg bg-${stat.color}/10 flex items-center justify-center`}>
+                      <Icon className={`h-6 w-6 text-${stat.color}`} />
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">{stat.label}</p>
+                      <p className="text-2xl font-bold">{stat.value}</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">{stat.label}</p>
-                    <p className="text-2xl font-bold">{stat.value}</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
 
         <div className="grid lg:grid-cols-3 gap-6">
@@ -241,8 +219,7 @@ const AdminDashboard = () => {
           </div>
         </div>
       </div>
-      </div>
-    </div>
+    </DashboardLayout>
   );
 };
 
