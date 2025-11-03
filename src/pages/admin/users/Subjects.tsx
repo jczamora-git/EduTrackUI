@@ -136,9 +136,9 @@ const Subjects = () => {
   const handleDelete = (id: string) => {
     const s = subjects.find((x) => x.id === id);
     if (!s) return;
-    if (!confirm(`Delete subject ${s.code} - ${s.name}? This action cannot be undone.`)) return;
-    setSubjects((prev) => prev.filter((x) => x.id !== id));
-    showAlert("info", "Subject deleted");
+    if (!confirm(`Inactivate subject ${s.code} - ${s.name}? This will set the subject to INACTIVE status.`)) return;
+    setSubjects((prev) => prev.map((x) => (x.id === id ? { ...x, status: "inactive" } : x)));
+    showAlert("info", `Subject ${s.code} has been set to inactive`);
   };
 
   if (!isAuthenticated) return null;
@@ -360,7 +360,13 @@ const Subjects = () => {
                             <Button variant="ghost" size="icon" onClick={() => handleOpenEdit(subject)}>
                               <Edit className="h-4 w-4" />
                             </Button>
-                            <Button variant="ghost" size="icon" onClick={() => handleDelete(subject.id)}>
+                            <Button 
+                              variant="ghost" 
+                              size="icon" 
+                              onClick={() => handleDelete(subject.id)}
+                              disabled={subject.status === "inactive"}
+                              className={subject.status === "inactive" ? "opacity-50 cursor-not-allowed" : ""}
+                            >
                               <Trash2 className="h-4 w-4 text-destructive" />
                             </Button>
                           </div>
@@ -569,6 +575,18 @@ const Subjects = () => {
                     </SelectContent>
                   </Select>
                 </div>
+              </div>
+              <div>
+                <Label htmlFor="edit-status" className="font-semibold text-slate-900">Status</Label>
+                <Select value={form.status} onValueChange={(v) => setForm((f) => ({ ...f, status: v as any }))}>
+                  <SelectTrigger className="mt-2 border-2 rounded-lg px-3 py-2 bg-white">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="active">Active</SelectItem>
+                    <SelectItem value="inactive">Inactive</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
               <div className="flex gap-2">
                 <Button className="flex-1 bg-gradient-to-r from-primary to-accent text-white py-3 font-semibold rounded-lg" onClick={handleEdit}>

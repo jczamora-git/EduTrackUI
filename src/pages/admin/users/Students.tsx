@@ -195,9 +195,9 @@ const Students = () => {
   const handleDelete = (id: string) => {
     const s = students.find((x) => x.id === id);
     if (!s) return;
-    if (!confirm(`Delete student ${s.name}? This action cannot be undone.`)) return;
-    setStudents((prev) => prev.filter((x) => x.id !== id));
-    showAlert("info", "Student deleted");
+    if (!confirm(`Inactivate student ${s.name}? This will set the student to INACTIVE status.`)) return;
+    setStudents((prev) => prev.map((x) => (x.id === id ? { ...x, status: "inactive" } : x)));
+    showAlert("info", `Student ${s.name} has been set to inactive`);
   };
 
   if (!isAuthenticated) return null;
@@ -460,7 +460,13 @@ const Students = () => {
                         <Button variant="ghost" size="icon" onClick={() => handleOpenEdit(student)}>
                           <Edit className="h-4 w-4" />
                         </Button>
-                        <Button variant="ghost" size="icon" onClick={() => handleDelete(student.id)}>
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          onClick={() => handleDelete(student.id)}
+                          disabled={student.status === "inactive"}
+                          className={student.status === "inactive" ? "opacity-50 cursor-not-allowed" : ""}
+                        >
                           <Trash2 className="h-4 w-4 text-destructive" />
                         </Button>
                       </div>

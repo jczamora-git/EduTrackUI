@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus, Search, Edit, Trash2, GraduationCap, BookOpen } from "lucide-react";
+import { Plus, Search, Edit, Trash2, GraduationCap, BookOpen, Grid3x3, List } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { AlertMessage } from "@/components/AlertMessage";
 
@@ -28,6 +28,7 @@ const Teachers = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [viewMode, setViewMode] = useState<"list" | "grid">("list");
 
   const [teachers, setTeachers] = useState<Teacher[]>([
     {
@@ -243,9 +244,9 @@ const Teachers = () => {
   const handleDelete = (id: string) => {
     const t = teachers.find((x) => x.id === id);
     if (!t) return;
-    if (!confirm(`Delete teacher ${t.firstName} ${t.lastName}? This action cannot be undone.`)) return;
-    setTeachers((prev) => prev.filter((x) => x.id !== id));
-    showAlert("info", "Teacher deleted");
+    if (!confirm(`Inactivate teacher ${t.firstName} ${t.lastName}? This will set the teacher to INACTIVE status.`)) return;
+    setTeachers((prev) => prev.map((x) => (x.id === id ? { ...x, status: "inactive" } : x)));
+    showAlert("info", `Teacher ${t.firstName} ${t.lastName} has been set to inactive`);
   };
 
   if (!isAuthenticated) return null;
@@ -253,114 +254,233 @@ const Teachers = () => {
   return (
     <DashboardLayout>
       <div className="p-8">
-        <div className="mb-6 flex items-center justify-between">
+        <div className="mb-8 flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold mb-2">Manage Teachers</h1>
-            <p className="text-muted-foreground">Create and manage teacher accounts</p>
+            <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Manage Teachers</h1>
+            <p className="text-muted-foreground text-lg">Create and manage teacher accounts and course assignments</p>
           </div>
           <div className="flex items-center gap-3">
-            <div className="w-32">
-              <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Status</SelectItem>
-                  <SelectItem value="active">Active</SelectItem>
-                  <SelectItem value="inactive">Inactive</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <Button onClick={handleOpenCreate}>
-              <Plus className="h-4 w-4 mr-2" />
+            <Button onClick={handleOpenCreate} className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white shadow-lg hover:shadow-xl transition-all">
+              <Plus className="h-5 w-5 mr-2" />
               Add Teacher
             </Button>
           </div>
         </div>
 
-        <Card>
-          <CardHeader>
+        <Card className="shadow-lg border-0">
+          <CardHeader className="bg-gradient-to-r from-slate-50 to-slate-100 border-b pb-6">
             <div className="flex items-center justify-between">
               <div>
-                <CardTitle>All Teachers ({filteredTeachers.length})</CardTitle>
-                <CardDescription>Faculty members in the institution</CardDescription>
+                <CardTitle className="text-2xl font-bold text-slate-900">All Teachers ({filteredTeachers.length})</CardTitle>
+                <CardDescription className="text-base">Faculty members and their course assignments</CardDescription>
               </div>
-              <div className="relative w-64">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Search teachers..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10"
-                />
+              <div className="flex items-center gap-3">
+                <div className="relative w-72">
+                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                  <Input
+                    placeholder="Search teachers by name or ID..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="pl-12 py-2 text-base border-2 focus:border-accent-500 rounded-lg"
+                  />
+                </div>
+                <div className="w-40">
+                  <Select value={statusFilter} onValueChange={setStatusFilter}>
+                    <SelectTrigger className="border-2 focus:border-accent-500 rounded-lg px-3 py-2 bg-white">
+                      <SelectValue>{statusFilter === "all" ? "All Status" : statusFilter.charAt(0).toUpperCase() + statusFilter.slice(1)}</SelectValue>
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Status</SelectItem>
+                      <SelectItem value="active">Active</SelectItem>
+                      <SelectItem value="inactive">Inactive</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setViewMode((v) => (v === "list" ? "grid" : "list"))}
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium border-2 shadow-sm hover:bg-accent-50 hover:border-accent-300 transition-all"
+                  title="Toggle view"
+                  aria-pressed={viewMode === "grid"}
+                >
+                  {viewMode === "list" ? <Grid3x3 className="h-4 w-4" /> : <List className="h-4 w-4" />}
+                  {viewMode === "list" ? "Grid" : "List"}
+                </Button>
               </div>
             </div>
           </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {filteredTeachers.map((teacher) => (
-                <div
-                  key={teacher.id}
-                  className="p-5 border border-border rounded-xl bg-white hover:shadow-md transition-all hover:border-primary/20"
-                >
-                  {/* Header: Teacher Info */}
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex items-center gap-4 flex-1">
-                      <div className="w-14 h-14 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-sm">
-                        <GraduationCap className="h-7 w-7 text-white" />
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-1">
-                          <p className="font-bold text-lg">{teacher.firstName} {teacher.lastName}</p>
-                          <Badge variant="outline" className="text-xs font-semibold">
-                            {teacher.employeeId}
-                          </Badge>
+          <CardContent className="p-6">
+            {viewMode === "grid" ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredTeachers.map((teacher) => (
+                  <div
+                    key={teacher.id}
+                    className={`rounded-2xl border-2 transition-all duration-300 flex flex-col overflow-hidden ${
+                      teacher.status === "inactive"
+                        ? "bg-slate-50 border-slate-200 opacity-70"
+                        : "bg-gradient-to-br from-white to-slate-50 border-accent-200 hover:border-accent-400 hover:shadow-xl"
+                    }`}
+                  >
+                    <div className={teacher.status === "inactive" ? "p-5 opacity-60 pointer-events-none" : "p-5"}>
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-md">
+                            <GraduationCap className="h-6 w-6 text-white" />
+                          </div>
+                          <div>
+                            <p className="font-bold text-lg text-slate-900">{teacher.firstName} {teacher.lastName}</p>
+                            <p className="text-sm text-muted-foreground">{teacher.email}</p>
+                          </div>
                         </div>
-                        <p className="text-sm text-muted-foreground">{teacher.email}</p>
                       </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Badge variant={teacher.status === "active" ? "default" : "outline"} className="font-medium">
-                        {teacher.status.charAt(0).toUpperCase() + teacher.status.slice(1)}
-                      </Badge>
-                    </div>
-                  </div>
 
-                  {/* Courses Section */}
-                  {teacher.assignedCourses.length > 0 && (
-                    <div className="mb-4 pb-4 border-b border-border/50">
-                      <div className="flex items-center gap-2 mb-3">
-                        <BookOpen className="h-4 w-4 text-primary" />
-                        <span className="font-semibold text-sm">{teacher.assignedCourses.length} Assigned Course{teacher.assignedCourses.length !== 1 ? 's' : ''}</span>
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        <Badge 
+                          variant="secondary" 
+                          className="capitalize font-semibold px-3 py-1 bg-gradient-to-r from-primary/10 to-accent/10 text-primary border border-primary/20"
+                        >
+                          {teacher.employeeId}
+                        </Badge>
+                        <Badge 
+                          variant="outline" 
+                          className={`font-semibold px-3 py-1 ${teacher.status === "active" ? "bg-success/10 text-success border-success/20" : "bg-slate-100 text-slate-600"}`}
+                        >
+                          {teacher.status.charAt(0).toUpperCase() + teacher.status.slice(1)}
+                        </Badge>
                       </div>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        {teacher.assignedCourses.map((ac, i) => (
-                          <div key={i} className="p-3 bg-slate-50 rounded-lg border border-border/30">
-                            <div className="flex items-start justify-between mb-2">
-                              <div className="flex-1">
-                                <p className="font-semibold text-sm text-foreground">{ac.course}</p>
-                                {ac.title && <p className="text-xs text-muted-foreground line-clamp-2">{ac.title}</p>}
+
+                      {teacher.assignedCourses.length > 0 && (
+                        <div className="pt-3 border-t border-accent-100">
+                          <div className="flex items-center gap-2 mb-3">
+                            <BookOpen className="h-4 w-4 text-primary" />
+                            <span className="font-semibold text-sm text-slate-900">{teacher.assignedCourses.length} Course{teacher.assignedCourses.length !== 1 ? 's' : ''}</span>
+                          </div>
+                          <div className="space-y-2">
+                            {teacher.assignedCourses.slice(0, 3).map((ac, i) => (
+                              <div key={i} className="p-2 bg-slate-100 rounded-lg">
+                                <p className="font-semibold text-xs text-slate-900">{ac.course}</p>
+                                {ac.sections.length > 0 && (
+                                  <div className="flex flex-wrap gap-1 mt-1">
+                                    {ac.sections.map((s) => (
+                                      <Badge key={s} variant="default" className="text-xs font-semibold bg-gradient-to-r from-primary to-accent text-white">
+                                        {s}
+                                      </Badge>
+                                    ))}
+                                  </div>
+                                )}
                               </div>
-                              {ac.units !== undefined && (
-                                <Badge variant="secondary" className="text-xs ml-2 shrink-0">
-                                  {ac.units} u
-                                </Badge>
-                              )}
-                            </div>
-                            {ac.sections.length > 0 && (
-                              <div className="flex flex-wrap gap-1 mt-2">
-                                {ac.sections.map((s) => (
-                                  <Badge key={s} variant="default" className="text-xs font-semibold bg-gradient-to-r from-primary to-accent text-white">
-                                    {s}
-                                  </Badge>
-                                ))}
-                              </div>
+                            ))}
+                            {teacher.assignedCourses.length > 3 && (
+                              <p className="text-xs text-muted-foreground font-medium">+{teacher.assignedCourses.length - 3} more</p>
                             )}
                           </div>
-                        ))}
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="mt-auto p-5 border-t border-accent-100 bg-slate-50">
+                      <div className="flex gap-3">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleOpenEdit(teacher)}
+                          className="flex-1 gap-2 font-medium hover:bg-accent-50 hover:border-accent-300 transition-all"
+                        >
+                          <Edit className="h-4 w-4" />
+                          Edit
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleDelete(teacher.id)}
+                          disabled={teacher.status === "inactive"}
+                          className={`text-destructive hover:text-destructive hover:bg-destructive/10 flex-1 gap-2 font-medium transition-all ${
+                            teacher.status === "inactive" ? "opacity-50 cursor-not-allowed" : ""
+                          }`}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                          Delete
+                        </Button>
                       </div>
                     </div>
-                  )}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {filteredTeachers.map((teacher) => (
+                <div
+                  key={teacher.id}
+                  className={`p-5 border-2 rounded-2xl transition-all duration-300 ${
+                    teacher.status === "inactive"
+                      ? "bg-slate-50 border-slate-200 opacity-70"
+                      : "bg-white border-accent-100 hover:shadow-md hover:border-accent-300"
+                  }`}
+                >
+                  {/* Header: Teacher Info */}
+                  <div className={teacher.status === "inactive" ? "opacity-60 pointer-events-none" : ""}>
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex items-center gap-4 flex-1">
+                        <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-md">
+                          <GraduationCap className="h-7 w-7 text-white" />
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-3 mb-1">
+                            <p className="font-bold text-lg text-slate-900">{teacher.firstName} {teacher.lastName}</p>
+                            <Badge variant="outline" className="text-xs font-semibold bg-gradient-to-r from-primary/10 to-accent/10 text-primary border border-primary/20">
+                              {teacher.employeeId}
+                            </Badge>
+                          </div>
+                          <p className="text-sm text-muted-foreground">{teacher.email}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Badge 
+                          variant={teacher.status === "active" ? "default" : "outline"} 
+                          className={`font-medium ${teacher.status === "active" ? "bg-success text-white" : ""}`}
+                        >
+                          {teacher.status.charAt(0).toUpperCase() + teacher.status.slice(1)}
+                        </Badge>
+                      </div>
+                    </div>
+
+                    {/* Courses Section */}
+                    {teacher.assignedCourses.length > 0 && (
+                      <div className="mb-4 pb-4 border-b border-border/50">
+                        <div className="flex items-center gap-2 mb-3">
+                          <BookOpen className="h-4 w-4 text-primary" />
+                          <span className="font-semibold text-sm">{teacher.assignedCourses.length} Assigned Course{teacher.assignedCourses.length !== 1 ? 's' : ''}</span>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          {teacher.assignedCourses.map((ac, i) => (
+                            <div key={i} className="p-3 bg-slate-50 rounded-lg border border-border/30">
+                              <div className="flex items-start justify-between mb-2">
+                                <div className="flex-1">
+                                  <p className="font-semibold text-sm text-foreground">{ac.course}</p>
+                                  {ac.title && <p className="text-xs text-muted-foreground line-clamp-2">{ac.title}</p>}
+                                </div>
+                                {ac.units !== undefined && (
+                                  <Badge variant="secondary" className="text-xs ml-2 shrink-0">
+                                    {ac.units} u
+                                  </Badge>
+                                )}
+                              </div>
+                              {ac.sections.length > 0 && (
+                                <div className="flex flex-wrap gap-1 mt-2">
+                                  {ac.sections.map((s) => (
+                                    <Badge key={s} variant="default" className="text-xs font-semibold bg-gradient-to-r from-primary to-accent text-white">
+                                      {s}
+                                    </Badge>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
 
                   {/* Actions */}
                   <div className="flex items-center justify-end gap-2">
@@ -377,20 +497,26 @@ const Teachers = () => {
                       variant="outline" 
                       size="sm" 
                       onClick={() => handleDelete(teacher.id)}
-                      className="text-destructive hover:text-destructive hover:bg-destructive/10 gap-2"
+                      disabled={teacher.status === "inactive"}
+                      className={`text-destructive hover:text-destructive hover:bg-destructive/10 gap-2 ${
+                        teacher.status === "inactive" ? "opacity-50 cursor-not-allowed" : ""
+                      }`}
                     >
                       <Trash2 className="h-4 w-4" />
                       Delete
                     </Button>
                   </div>
                 </div>
-              ))}
-              {filteredTeachers.length === 0 && (
-                <div className="text-center py-8 text-muted-foreground">
-                  No teachers found matching your filters
-                </div>
-              )}
-            </div>
+                ))}
+              </div>
+            )}
+            {filteredTeachers.length === 0 && (
+              <div className="text-center py-16">
+                <GraduationCap className="h-16 w-16 text-muted-foreground/30 mx-auto mb-4" />
+                <p className="text-lg text-muted-foreground font-medium">No teachers found matching your filters</p>
+                <p className="text-sm text-muted-foreground mt-2">Try adjusting your search or filters</p>
+              </div>
+            )}
           </CardContent>
         </Card>
 

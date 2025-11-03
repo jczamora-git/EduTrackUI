@@ -13,6 +13,7 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
   isAuthenticated: boolean;
+  checkUser: () => boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -27,9 +28,6 @@ const DEMO_USERS: User[] = [
 const DEMO_PASSWORD = 'demo123';
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  // Initialize from localStorage synchronously to avoid a race where
-  // components redirect before the stored session is restored (opening
-  // the app in a new tab was causing the session to appear "destroyed").
   const [user, setUser] = useState<User | null>(() => {
     try {
       const stored = localStorage.getItem('edutrack_user');
@@ -72,9 +70,41 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem('edutrack_user');
     navigate('/auth');
   };
+ const checkUser = () => {
 
+  const storedUser = localStorage.getItem('edutrack_user');
+    
+    // If user is authenticated and session exists
+    if (storedUser) {
+      try {
+        const parsedUser = JSON.parse(storedUser) as User;
+        
+        // Verify the stored user matches the current user
+        if (parsedUser.id) {
+          // Navigate based on role
+          switch (parsedUser.role) {
+            case 'student':
+              navigate('/student/dashboard');
+              break;
+            case 'teacher':
+              navigate('/teacher/dashboard');
+              break;
+            case 'admin':
+              navigate('/admin/dashboard');
+              break;
+          }
+          return true;
+        }else{
+          return false;
+        }
+      } catch (e) {
+        console.error('Failed to parse stored user', e);
+        return false;
+      }
+    }
+  };
   return (
-    <AuthContext.Provider value={{ user, login, logout, isAuthenticated: !!user }}>
+    <AuthContext.Provider value={{ user, login, logout, isAuthenticated: !!user, checkUser }}>
       {children}
     </AuthContext.Provider>
   );

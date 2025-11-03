@@ -4,12 +4,14 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./hooks/useAuth";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import StudentDashboard from "./pages/StudentDashboard";
 import TeacherDashboard from "./pages/TeacherDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import NotFound from "./pages/NotFound";
+import Unauthorized from "./pages/Unauthorized";
 
 // Admin pages
 import UserManagement from "./pages/admin/UserManagement";
@@ -58,43 +60,44 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/unauthorized" element={<Unauthorized />} />
             
             {/* Student Routes */}
-            <Route path="/student/dashboard" element={<StudentDashboard />} />
-            <Route path="/student/courses" element={<MyCourses />} />
-            <Route path="/student/activities" element={<MyActivities />} />
-            <Route path="/student/grades" element={<MyGrades />} />
-            <Route path="/student/progress" element={<MyProgress />} />
-            <Route path="/student/course-grade-detail" element={<CourseGradeDetail />} />
-            <Route path="/student/settings" element={<StudentSettings />} />
+            <Route path="/student/dashboard" element={<ProtectedRoute requiredRole="student"><StudentDashboard /></ProtectedRoute>} />
+            <Route path="/student/courses" element={<ProtectedRoute requiredRole="student"><MyCourses /></ProtectedRoute>} />
+            <Route path="/student/activities" element={<ProtectedRoute requiredRole="student"><MyActivities /></ProtectedRoute>} />
+            <Route path="/student/grades" element={<ProtectedRoute requiredRole="student"><MyGrades /></ProtectedRoute>} />
+            <Route path="/student/progress" element={<ProtectedRoute requiredRole="student"><MyProgress /></ProtectedRoute>} />
+            <Route path="/student/course-grade-detail" element={<ProtectedRoute requiredRole="student"><CourseGradeDetail /></ProtectedRoute>} />
+            <Route path="/student/settings" element={<ProtectedRoute requiredRole="student"><StudentSettings /></ProtectedRoute>} />
+            <Route path="/student/courses/:courseId" element={<ProtectedRoute requiredRole="student"><CourseDetails /></ProtectedRoute>} />
             
             {/* Teacher Routes */}
-            <Route path="/teacher/dashboard" element={<TeacherDashboard />} />
-            <Route path="/teacher/courses" element={<Courses />} />
-            <Route path="/teacher/courses/:courseId/activities/:activityId" element={<ActivityDetail />} />
-            <Route path="/teacher/activities" element={<Activities />} />
-            <Route path="/teacher/students" element={<StudentManagement />} />
-            <Route path="/teacher/student-detail" element={<StudentDetail />} />
-            <Route path="/teacher/grades" element={<GradeInput />} />
-            <Route path="/teacher/grade-input-edit" element={<GradeInputEdit />} />
-            <Route path="/teacher/settings" element={<TeacherSettings />} />
+            <Route path="/teacher/dashboard" element={<ProtectedRoute requiredRole="teacher"><TeacherDashboard /></ProtectedRoute>} />
+            <Route path="/teacher/courses" element={<ProtectedRoute requiredRole="teacher"><Courses /></ProtectedRoute>} />
+            <Route path="/teacher/courses/:courseId/activities/:activityId" element={<ProtectedRoute requiredRole="teacher"><ActivityDetail /></ProtectedRoute>} />
+            <Route path="/teacher/activities" element={<ProtectedRoute requiredRole="teacher"><Activities /></ProtectedRoute>} />
+            <Route path="/teacher/students" element={<ProtectedRoute requiredRole="teacher"><StudentManagement /></ProtectedRoute>} />
+            <Route path="/teacher/student-detail" element={<ProtectedRoute requiredRole="teacher"><StudentDetail /></ProtectedRoute>} />
+            <Route path="/teacher/grades" element={<ProtectedRoute requiredRole="teacher"><GradeInput /></ProtectedRoute>} />
+            <Route path="/teacher/grade-input-edit" element={<ProtectedRoute requiredRole="teacher"><GradeInputEdit /></ProtectedRoute>} />
+            <Route path="/teacher/settings" element={<ProtectedRoute requiredRole="teacher"><TeacherSettings /></ProtectedRoute>} />
+            <Route path="/teacher/courses/:courseId" element={<ProtectedRoute requiredRole="teacher"><CourseManagement /></ProtectedRoute>} />
             
             {/* Admin Routes */}
-            <Route path="/admin/dashboard" element={<AdminDashboard />} />
-            <Route path="/admin/users" element={<UserManagement />} />
-            <Route path="/admin/users/teachers" element={<Teachers />} />
-            <Route path="/admin/users/students" element={<Students />} />
-            <Route path="/admin/users/subjects" element={<Subjects />} />
-            <Route path="/admin/users/sections" element={<Sections />} />
-            <Route path="/admin/users/sections/:sectionId" element={<SectionDetail />} />
-            <Route path="/admin/grading" element={<GradingSystem />} />
-            <Route path="/admin/assignments" element={<SubjectAssignment />} />
-            <Route path="/admin/announcements" element={<Announcements />} />
-            <Route path="/admin/payments" element={<Payments />} />
-            <Route path="/admin/pdf" element={<PDFGeneration />} />
-            <Route path="/admin/settings" element={<AdminSettings />} />
-            <Route path="/student/courses/:courseId" element={<CourseDetails />} />
-            <Route path="/teacher/courses/:courseId" element={<CourseManagement />} />
+            <Route path="/admin/dashboard" element={<ProtectedRoute requiredRole="admin"><AdminDashboard /></ProtectedRoute>} />
+            <Route path="/admin/users" element={<ProtectedRoute requiredRole="admin"><UserManagement /></ProtectedRoute>} />
+            <Route path="/admin/users/teachers" element={<ProtectedRoute requiredRole="admin"><Teachers /></ProtectedRoute>} />
+            <Route path="/admin/users/students" element={<ProtectedRoute requiredRole="admin"><Students /></ProtectedRoute>} />
+            <Route path="/admin/users/subjects" element={<ProtectedRoute requiredRole="admin"><Subjects /></ProtectedRoute>} />
+            <Route path="/admin/users/sections" element={<ProtectedRoute requiredRole="admin"><Sections /></ProtectedRoute>} />
+            <Route path="/admin/users/sections/:sectionId" element={<ProtectedRoute requiredRole="admin"><SectionDetail /></ProtectedRoute>} />
+            <Route path="/admin/grading" element={<ProtectedRoute requiredRole="admin"><GradingSystem /></ProtectedRoute>} />
+            <Route path="/admin/assignments" element={<ProtectedRoute requiredRole="admin"><SubjectAssignment /></ProtectedRoute>} />
+            <Route path="/admin/announcements" element={<ProtectedRoute requiredRole="admin"><Announcements /></ProtectedRoute>} />
+            <Route path="/admin/payments" element={<ProtectedRoute requiredRole="admin"><Payments /></ProtectedRoute>} />
+            <Route path="/admin/pdf" element={<ProtectedRoute requiredRole="admin"><PDFGeneration /></ProtectedRoute>} />
+            <Route path="/admin/settings" element={<ProtectedRoute requiredRole="admin"><AdminSettings /></ProtectedRoute>} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

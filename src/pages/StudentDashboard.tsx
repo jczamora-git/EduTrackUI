@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -9,14 +8,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { DashboardLayout } from "@/components/DashboardLayout";
 
 const StudentDashboard = () => {
-  const { user, isAuthenticated } = useAuth();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!isAuthenticated || user?.role !== 'student') {
-      navigate('/auth');
-    }
-  }, [isAuthenticated, user, navigate]);
+  const { user } = useAuth();
   const courses = [
     { id: 1, name: "Mathematics 101", teacher: "Dr. Smith", grade: 92, progress: 75, status: "active" },
     { id: 2, name: "Physics 201", teacher: "Prof. Johnson", grade: 88, progress: 60, status: "active" },
@@ -33,8 +25,6 @@ const StudentDashboard = () => {
     { id: 1, message: "New assignment posted in Mathematics 101", time: "2 hours ago" },
     { id: 2, message: "Grade updated for Physics Lab Report", time: "1 day ago" },
   ];
-
-  if (!isAuthenticated) return null;
 
   return (
     <DashboardLayout>

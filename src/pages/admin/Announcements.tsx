@@ -13,14 +13,14 @@ import { Bell, Plus } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 const Announcements = () => {
-  const { user, isAuthenticated } = useAuth();
-  const navigate = useNavigate();
+  // const { user, isAuthenticated } = useAuth();
+  // const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!isAuthenticated || user?.role !== "admin") {
-      navigate("/auth");
-    }
-  }, [isAuthenticated, user, navigate]);
+  // useEffect(() => {
+  //   if (!isAuthenticated || user?.role !== "admin") {
+  //     navigate("/auth");
+  //   }
+  // }, [isAuthenticated, user, navigate]);
 
   const announcements = [
     { title: "Semester Break Notice", audience: "All", date: "2025-01-20", status: "active" },
@@ -28,7 +28,7 @@ const Announcements = () => {
     { title: "Parent-Teacher Meeting", audience: "All", date: "2025-01-15", status: "archived" },
   ];
 
-  if (!isAuthenticated) return null;
+  // if (!isAuthenticated) return null;
 
   return (
     <DashboardLayout>

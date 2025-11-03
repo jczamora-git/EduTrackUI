@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -8,14 +7,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { DashboardLayout } from "@/components/DashboardLayout";
 
 const AdminDashboard = () => {
-  const { user, isAuthenticated } = useAuth();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!isAuthenticated || user?.role !== 'admin') {
-      navigate('/auth');
-    }
-  }, [isAuthenticated, user, navigate]);
+  const { user } = useAuth();
   const stats = [
     { label: "Total Students", value: "1,234", icon: Users, color: "primary" },
     { label: "Total Teachers", value: "89", icon: GraduationCap, color: "accent" },
@@ -34,8 +26,6 @@ const AdminDashboard = () => {
     { name: "User Permissions", status: "active", description: "Role-based access control enabled" },
     { name: "Email Notifications", status: "active", description: "Automated alerts configured" },
   ];
-
-  if (!isAuthenticated) return null;
 
   return (
     <DashboardLayout>

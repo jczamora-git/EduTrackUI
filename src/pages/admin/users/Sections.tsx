@@ -7,7 +7,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Plus, Search, Edit, Trash2, Grid3x3, Users, X } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Plus, Search, Edit, Trash2, Grid3x3, Users, List } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { AlertMessage } from "@/components/AlertMessage";
 
@@ -24,6 +25,7 @@ const Sections = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [viewMode, setViewMode] = useState<"grid" | "list">("list");
 
   const [sections, setSections] = useState<Section[]>([
     {
@@ -158,17 +160,6 @@ const Sections = () => {
             <p className="text-muted-foreground text-lg">Organize and manage class sections with students</p>
           </div>
           <div className="flex items-center gap-3">
-            <div className="w-40">
-              <select
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-                className="w-full px-4 py-2 border-2 border-border rounded-lg text-sm font-medium focus:outline-none focus:border-accent-500 transition-colors bg-white"
-              >
-                <option value="all">All Status</option>
-                <option value="active">Active Only</option>
-                <option value="inactive">Inactive Only</option>
-              </select>
-            </div>
             <Button onClick={handleOpenCreate} className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white shadow-lg hover:shadow-xl transition-all">
               <Plus className="h-5 w-5 mr-2" />
               Add Section
@@ -183,49 +174,79 @@ const Sections = () => {
                 <CardTitle className="text-2xl font-bold text-slate-900">All Sections ({filteredSections.length})</CardTitle>
                 <CardDescription className="text-base">View and manage your class sections</CardDescription>
               </div>
-              <div className="relative w-72">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                <Input
-                  placeholder="Search by name or description..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-12 py-2 text-base"
-                />
+              <div className="flex items-center gap-3">
+                <div className="relative w-72">
+                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                  <Input
+                    placeholder="Search by name or description..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="pl-12 py-2 text-base border-2 focus:border-accent-500 rounded-lg"
+                  />
+                </div>
+                <div className="w-40">
+                  <Select value={statusFilter} onValueChange={(v) => setStatusFilter(v)}>
+                    <SelectTrigger className="border-2 focus:border-accent-500 rounded-lg px-3 py-2 bg-white">
+                      <SelectValue>{statusFilter === "all" ? "All Status" : statusFilter === "active" ? "Active Only" : "Inactive Only"}</SelectValue>
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Status</SelectItem>
+                      <SelectItem value="active">Active Only</SelectItem>
+                      <SelectItem value="inactive">Inactive Only</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setViewMode((v) => (v === "list" ? "grid" : "list"))}
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium border-2 shadow-sm hover:bg-accent-50 hover:border-accent-300 transition-all"
+                  title="Toggle view"
+                  aria-pressed={viewMode === "grid"}
+                >
+                  {viewMode === "grid" ? <Grid3x3 className="h-4 w-4" /> : <List className="h-4 w-4" />}
+                  {viewMode === "list" ? "List" : "Grid"}
+                </Button>
               </div>
             </div>
           </CardHeader>
           <CardContent className="p-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredSections.map((section) => (
-                <div
-                  key={section.id}
-                  className={`rounded-2xl border-2 transition-all duration-300 flex flex-col justify-between overflow-hidden ${
-                    section.status === "inactive"
-                      ? "bg-slate-50 border-slate-200 opacity-70 hover:opacity-80"
-            : "bg-gradient-to-br from-white to-slate-50 border-accent-200 hover:border-accent-400 hover:shadow-xl"
-                  }`}
-                >
-                  {/* Main content - dim when inactive */}
-                  <div className={section.status === "inactive" ? "opacity-60 pointer-events-none p-5" : "p-5"}>
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex items-center gap-3">
-                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center shadow-md ${
-                          section.status === "active"
-                            ? "bg-gradient-to-br from-primary to-accent"
-                            : "bg-gradient-to-br from-gray-300 to-gray-400"
-                        }`}>
-                          <Grid3x3 className="h-6 w-6 text-white" />
-                        </div>
-                        <div>
-                          <p className="font-bold text-xl text-slate-900">{section.name}</p>
+            {viewMode === "list" ? (
+              <div className="space-y-4">
+                {filteredSections.map((section) => (
+                  <div
+                    key={section.id}
+                    className={`rounded-2xl border-2 transition-all duration-300 p-5 flex items-center justify-between ${
+                      section.status === "inactive"
+                        ? "bg-slate-50 border-slate-200 opacity-70"
+                        : "bg-gradient-to-br from-white to-slate-50 border-accent-200 hover:border-accent-400 hover:shadow-md"
+                    }`}
+                  >
+                    <div className="flex items-center gap-4 flex-1">
+                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center shadow-md shrink-0 ${
+                        section.status === "active"
+                          ? "bg-gradient-to-br from-primary to-accent"
+                          : "bg-gradient-to-br from-gray-300 to-gray-400"
+                      }`}>
+                        <Grid3x3 className="h-6 w-6 text-white" />
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-1">
+                          <p className="font-bold text-lg text-slate-900">{section.name}</p>
                           {section.description && (
-                            <p className="text-sm text-muted-foreground line-clamp-1">{section.description}</p>
+                            <p className="text-sm text-muted-foreground hidden sm:inline-block">{section.description}</p>
                           )}
                         </div>
+                        <div className="flex items-center gap-2">
+                          <Users className="h-4 w-4 text-muted-foreground" />
+                          <span className="text-sm font-semibold text-muted-foreground">{section.students.length} Students</span>
+                        </div>
                       </div>
+                    </div>
+                    <div className="flex items-center gap-3">
                       <Badge
                         variant={section.status === "active" ? "default" : "outline"}
-                        className={`font-semibold px-3 py-1 ${
+                        className={`font-semibold px-3 py-1 shrink-0 ${
                           section.status === "active"
                             ? "bg-gradient-to-r from-primary to-accent text-white"
                             : "bg-slate-200 text-slate-700"
@@ -233,37 +254,11 @@ const Sections = () => {
                       >
                         {section.status.charAt(0).toUpperCase() + section.status.slice(1)}
                       </Badge>
-                    </div>
-
-                    <div className={`rounded-xl p-4 mb-4 ${
-                      section.status === "active"
-                        ? "bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20"
-                        : "bg-slate-100 border border-slate-200"
-                    }`}>
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm font-semibold text-slate-600">Total Students</span>
-                        <span className={`text-3xl font-bold ${
-                          section.status === "active"
-                            ? "bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
-                            : "text-slate-600"
-                        }`}>
-                          {section.students.length}
-                        </span>
-                      </div>
-                      <div className="text-xs text-muted-foreground mt-2">enrolled in this section</div>
-                    </div>
-                  </div>
-
-                  {/* Actions - keep enabled even when section is inactive */}
-                  <div className={`mt-2 p-5 border-t ${
-                    section.status === "inactive" ? "border-slate-200 bg-white" : "border-accent-100 bg-slate-50"
-                  }`}>
-                    <div className="flex gap-3">
                       <Button
                         variant="outline"
                         size="sm"
                         onClick={() => navigate(`/admin/users/sections/${section.id}`, { state: { section } })}
-                        className="flex-1 gap-2 font-medium hover:bg-accent-50 hover:border-accent-300 transition-all"
+                        className="gap-2 font-medium hover:bg-accent-50 hover:border-accent-300 transition-all shrink-0"
                       >
                         <Edit className="h-4 w-4" />
                         Manage
@@ -273,7 +268,7 @@ const Sections = () => {
                         size="sm"
                         onClick={() => handleDelete(section.id)}
                         disabled={section.status === "inactive"}
-                        className={`text-destructive hover:text-destructive hover:bg-destructive/10 flex-1 gap-2 font-medium transition-all ${
+                        className={`text-destructive hover:text-destructive hover:bg-destructive/10 gap-2 font-medium transition-all shrink-0 ${
                           section.status === "inactive" ? "opacity-50 cursor-not-allowed" : ""
                         }`}
                       >
@@ -282,16 +277,108 @@ const Sections = () => {
                       </Button>
                     </div>
                   </div>
-                </div>
-              ))}
-              {filteredSections.length === 0 && (
-                <div className="col-span-full text-center py-16">
-                  <Grid3x3 className="h-16 w-16 text-muted-foreground/30 mx-auto mb-4" />
-                  <p className="text-lg text-muted-foreground font-medium">No sections found matching your filters</p>
-                  <p className="text-sm text-muted-foreground mt-2">Try adjusting your search or filters</p>
-                </div>
-              )}
-            </div>
+                ))}
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredSections.map((section) => (
+                  <div
+                    key={section.id}
+                    className={`rounded-2xl border-2 transition-all duration-300 flex flex-col justify-between overflow-hidden ${
+                      section.status === "inactive"
+                        ? "bg-slate-50 border-slate-200 opacity-70 hover:opacity-80"
+              : "bg-gradient-to-br from-white to-slate-50 border-accent-200 hover:border-accent-400 hover:shadow-xl"
+                    }`}
+                  >
+                    {/* Main content - dim when inactive */}
+                    <div className={section.status === "inactive" ? "opacity-60 pointer-events-none p-5" : "p-5"}>
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex items-center gap-3">
+                          <div className={`w-12 h-12 rounded-xl flex items-center justify-center shadow-md ${
+                            section.status === "active"
+                              ? "bg-gradient-to-br from-primary to-accent"
+                              : "bg-gradient-to-br from-gray-300 to-gray-400"
+                          }`}>
+                            <Grid3x3 className="h-6 w-6 text-white" />
+                          </div>
+                          <div>
+                            <p className="font-bold text-xl text-slate-900">{section.name}</p>
+                            {section.description && (
+                              <p className="text-sm text-muted-foreground line-clamp-1">{section.description}</p>
+                            )}
+                          </div>
+                        </div>
+                        <Badge
+                          variant={section.status === "active" ? "default" : "outline"}
+                          className={`font-semibold px-3 py-1 ${
+                            section.status === "active"
+                              ? "bg-gradient-to-r from-primary to-accent text-white"
+                              : "bg-slate-200 text-slate-700"
+                          }`}
+                        >
+                          {section.status.charAt(0).toUpperCase() + section.status.slice(1)}
+                        </Badge>
+                      </div>
+
+                      <div className={`rounded-xl p-4 mb-4 ${
+                        section.status === "active"
+                          ? "bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20"
+                          : "bg-slate-100 border border-slate-200"
+                      }`}>
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm font-semibold text-slate-600">Total Students</span>
+                          <span className={`text-3xl font-bold ${
+                            section.status === "active"
+                              ? "bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
+                              : "text-slate-600"
+                          }`}>
+                            {section.students.length}
+                          </span>
+                        </div>
+                        <div className="text-xs text-muted-foreground mt-2">enrolled in this section</div>
+                      </div>
+                    </div>
+
+                    {/* Actions - keep enabled even when section is inactive */}
+                    <div className={`mt-2 p-5 border-t ${
+                      section.status === "inactive" ? "border-slate-200 bg-white" : "border-accent-100 bg-slate-50"
+                    }`}>
+                      <div className="flex gap-3">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => navigate(`/admin/users/sections/${section.id}`, { state: { section } })}
+                          className="flex-1 gap-2 font-medium hover:bg-accent-50 hover:border-accent-300 transition-all"
+                        >
+                          <Edit className="h-4 w-4" />
+                          Manage
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleDelete(section.id)}
+                          disabled={section.status === "inactive"}
+                          className={`text-destructive hover:text-destructive hover:bg-destructive/10 flex-1 gap-2 font-medium transition-all ${
+                            section.status === "inactive" ? "opacity-50 cursor-not-allowed" : ""
+                          }`}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                          Deactivate
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+            
+            {filteredSections.length === 0 && (
+              <div className="col-span-full text-center py-16">
+                <Grid3x3 className="h-16 w-16 text-muted-foreground/30 mx-auto mb-4" />
+                <p className="text-lg text-muted-foreground font-medium">No sections found matching your filters</p>
+                <p className="text-sm text-muted-foreground mt-2">Try adjusting your search or filters</p>
+              </div>
+            )}
           </CardContent>
         </Card>
 
