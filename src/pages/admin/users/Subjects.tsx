@@ -152,9 +152,9 @@ const Subjects = () => {
             <p className="text-muted-foreground text-lg">Create and manage the course catalog (Information Technology)</p>
           </div>
           <div className="flex items-center gap-3">
-            <div className="w-44">
+              <div className="w-44">
               <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-                <SelectTrigger className="border-2 focus:border-accent-500 rounded-lg px-3 py-2 bg-white">
+                <SelectTrigger className="border-2 focus:border-accent-500 rounded-lg px-3 py-2 bg-background">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -173,10 +173,10 @@ const Subjects = () => {
         </div>
 
         <Card className="shadow-lg border-0">
-          <CardHeader className="bg-gradient-to-r from-slate-50 to-slate-100 border-b pb-6">
+          <CardHeader className="bg-gradient-to-r from-muted/50 to-muted border-b pb-6">
             <div className="flex items-center justify-between">
               <div>
-                <CardTitle className="text-2xl font-bold text-slate-900">All Subjects ({filteredSubjects.length})</CardTitle>
+                <CardTitle className="text-2xl font-bold">All Subjects ({filteredSubjects.length})</CardTitle>
                 <CardDescription className="text-base">Course catalog for the institution</CardDescription>
               </div>
               <div className="flex items-center gap-3">
@@ -232,8 +232,8 @@ const Subjects = () => {
                         key={subject.id}
                         className={`rounded-2xl border-2 transition-all duration-300 flex flex-col justify-between overflow-hidden ${
                           subject.status === "inactive"
-                            ? "bg-slate-50 border-slate-200 opacity-70 hover:opacity-80"
-                            : "bg-gradient-to-br from-white to-slate-50 border-accent-200 hover:border-accent-400 hover:shadow-xl"
+                            ? "bg-muted/50 border-muted opacity-70 hover:opacity-80"
+                            : "bg-gradient-to-br from-card to-muted/30 border-accent-200 hover:border-accent-400 hover:shadow-xl"
                         }`}
                       >
                         {/* Main content */}
@@ -248,7 +248,7 @@ const Subjects = () => {
                                 <BookOpen className="h-6 w-6 text-white" />
                               </div>
                               <div>
-                                <p className="font-bold text-xl text-slate-900">{subject.code}</p>
+                                <p className="font-bold text-xl">{subject.code}</p>
                                 {subject.description && (
                                   <p className="text-sm text-muted-foreground line-clamp-1">{subject.description}</p>
                                 )}
@@ -267,7 +267,7 @@ const Subjects = () => {
                           </div>
 
                           <div className="mb-4">
-                            <p className="font-semibold text-base text-slate-900">{subject.name}</p>
+                            <p className="font-semibold text-base">{subject.name}</p>
                             <div className="flex items-center gap-2 mt-2 text-sm text-muted-foreground">
                               <span>{subject.credits} units</span>
                               <span>•</span>
@@ -278,7 +278,7 @@ const Subjects = () => {
                           <div className={`rounded-xl p-3 ${
                             subject.status === "active"
                               ? "bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20"
-                              : "bg-slate-100 border border-slate-200"
+                              : "bg-card/50 border border-border/30"
                           }`}>
                             <div className="flex justify-between items-center">
                               <span className="text-xs font-semibold text-slate-600">Category</span>
@@ -291,7 +291,7 @@ const Subjects = () => {
 
                         {/* Actions */}
                         <div className={`mt-2 p-5 border-t ${
-                          subject.status === "inactive" ? "border-slate-200 bg-white" : "border-accent-100 bg-slate-50"
+                          subject.status === "inactive" ? "border-muted bg-muted/30" : "border-accent-100 bg-card/50"
                         }`}>
                           <div className="flex gap-3">
                             <Button
@@ -326,8 +326,8 @@ const Subjects = () => {
                         key={subject.id}
                         className={`rounded-2xl border-2 transition-all duration-300 flex items-center justify-between p-4 ${
                           subject.status === "inactive"
-                            ? "bg-slate-50 border-slate-200 opacity-80"
-                            : "bg-white border-accent-100 hover:border-accent-300 hover:shadow-md"
+                            ? "bg-muted/50 border-muted opacity-80"
+                            : "bg-card border-accent-100 hover:border-accent-300 hover:shadow-md"
                         }`}
                       >
                         <div className="flex items-center gap-4 flex-1">
@@ -338,7 +338,7 @@ const Subjects = () => {
                           </div>
                           <div className="flex-1">
                             <div className="flex items-center gap-2">
-                              <p className="font-semibold text-lg text-slate-900">{subject.code}</p>
+                              <p className="font-semibold text-lg">{subject.code}</p>
                               <Badge variant="outline" className="text-xs">
                                 {subject.credits} units
                               </Badge>
@@ -395,7 +395,7 @@ const Subjects = () => {
             <div className="space-y-5 px-2">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="code" className="font-semibold text-slate-900">Course Code *</Label>
+                  <Label htmlFor="code" className="font-semibold">Course Code *</Label>
                   <Input
                     id="code"
                     value={form.code}
@@ -405,7 +405,7 @@ const Subjects = () => {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="credits" className="font-semibold text-slate-900">Credits</Label>
+                  <Label htmlFor="credits" className="font-semibold">Credits</Label>
                   <Input
                     id="credits"
                     type="number"
@@ -416,7 +416,7 @@ const Subjects = () => {
                 </div>
               </div>
               <div>
-                <Label htmlFor="name" className="font-semibold text-slate-900">Course Name *</Label>
+                <Label htmlFor="name" className="font-semibold">Course Name *</Label>
                 <Input
                   id="name"
                   value={form.name}
@@ -426,7 +426,7 @@ const Subjects = () => {
                 />
               </div>
               <div>
-                <Label htmlFor="description" className="font-semibold text-slate-900">Description</Label>
+                <Label htmlFor="description" className="font-semibold">Description</Label>
                 <Input
                   id="description"
                   value={form.description}
@@ -437,9 +437,9 @@ const Subjects = () => {
               </div>
               <div className="grid grid-cols-3 gap-4">
                 <div>
-                  <Label htmlFor="category" className="font-semibold text-slate-900">Category</Label>
+                  <Label htmlFor="category" className="font-semibold">Category</Label>
                   <Select value={form.category} onValueChange={(v) => setForm((f) => ({ ...f, category: v as any }))}>
-                    <SelectTrigger className="mt-2 border-2 rounded-lg px-3 py-2 bg-white">
+                    <SelectTrigger className="mt-2 border-2 rounded-lg px-3 py-2 bg-background">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -450,12 +450,12 @@ const Subjects = () => {
                   </Select>
                 </div>
                 <div>
-                  <Label htmlFor="yearLevel" className="font-semibold text-slate-900">Year Level</Label>
+                  <Label htmlFor="yearLevel" className="font-semibold">Year Level</Label>
                   <Select
                     value={form.yearLevel.toString()}
                     onValueChange={(v) => setForm((f) => ({ ...f, yearLevel: parseInt(v) }))}
                   >
-                    <SelectTrigger className="mt-2 border-2 rounded-lg px-3 py-2 bg-white">
+                    <SelectTrigger className="mt-2 border-2 rounded-lg px-3 py-2 bg-background">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -467,9 +467,9 @@ const Subjects = () => {
                   </Select>
                 </div>
                 <div>
-                  <Label htmlFor="semester" className="font-semibold text-slate-900">Semester</Label>
+                  <Label htmlFor="semester" className="font-semibold">Semester</Label>
                   <Select value={form.semester} onValueChange={(v) => setForm((f) => ({ ...f, semester: v }))}>
-                    <SelectTrigger className="mt-2 border-2 rounded-lg px-3 py-2 bg-white">
+                    <SelectTrigger className="mt-2 border-2 rounded-lg px-3 py-2 bg-background">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -495,7 +495,7 @@ const Subjects = () => {
             <div className="space-y-5 px-2">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="edit-code" className="font-semibold text-slate-900">Course Code *</Label>
+                  <Label htmlFor="edit-code" className="font-semibold">Course Code *</Label>
                   <Input
                     id="edit-code"
                     value={form.code}
@@ -504,7 +504,7 @@ const Subjects = () => {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="edit-credits" className="font-semibold text-slate-900">Credits</Label>
+                  <Label htmlFor="edit-credits" className="font-semibold">Credits</Label>
                   <Input
                     id="edit-credits"
                     type="number"
@@ -515,7 +515,7 @@ const Subjects = () => {
                 </div>
               </div>
               <div>
-                <Label htmlFor="edit-name" className="font-semibold text-slate-900">Course Name *</Label>
+                <Label htmlFor="edit-name" className="font-semibold">Course Name *</Label>
                 <Input
                   id="edit-name"
                   value={form.name}
@@ -524,7 +524,7 @@ const Subjects = () => {
                 />
               </div>
               <div>
-                <Label htmlFor="edit-description" className="font-semibold text-slate-900">Description</Label>
+                <Label htmlFor="edit-description" className="font-semibold">Description</Label>
                 <Input
                   id="edit-description"
                   value={form.description}
@@ -534,9 +534,9 @@ const Subjects = () => {
               </div>
               <div className="grid grid-cols-3 gap-4">
                 <div>
-                  <Label htmlFor="edit-category" className="font-semibold text-slate-900">Category</Label>
+                  <Label htmlFor="edit-category" className="font-semibold">Category</Label>
                   <Select value={form.category} onValueChange={(v) => setForm((f) => ({ ...f, category: v as any }))}>
-                    <SelectTrigger className="mt-2 border-2 rounded-lg px-3 py-2 bg-white">
+                    <SelectTrigger className="mt-2 border-2 rounded-lg px-3 py-2 bg-background">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -547,12 +547,12 @@ const Subjects = () => {
                   </Select>
                 </div>
                 <div>
-                  <Label htmlFor="edit-yearLevel" className="font-semibold text-slate-900">Year Level</Label>
+                  <Label htmlFor="edit-yearLevel" className="font-semibold">Year Level</Label>
                   <Select
                     value={form.yearLevel.toString()}
                     onValueChange={(v) => setForm((f) => ({ ...f, yearLevel: parseInt(v) }))}
                   >
-                    <SelectTrigger className="mt-2 border-2 rounded-lg px-3 py-2 bg-white">
+                    <SelectTrigger className="mt-2 border-2 rounded-lg px-3 py-2 bg-background">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -564,9 +564,9 @@ const Subjects = () => {
                   </Select>
                 </div>
                 <div>
-                  <Label htmlFor="edit-semester" className="font-semibold text-slate-900">Semester</Label>
+                  <Label htmlFor="edit-semester" className="font-semibold">Semester</Label>
                   <Select value={form.semester} onValueChange={(v) => setForm((f) => ({ ...f, semester: v }))}>
-                    <SelectTrigger className="mt-2 border-2 rounded-lg px-3 py-2 bg-white">
+                    <SelectTrigger className="mt-2 border-2 rounded-lg px-3 py-2 bg-background">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -577,9 +577,9 @@ const Subjects = () => {
                 </div>
               </div>
               <div>
-                <Label htmlFor="edit-status" className="font-semibold text-slate-900">Status</Label>
+                <Label htmlFor="edit-status" className="font-semibold">Status</Label>
                 <Select value={form.status} onValueChange={(v) => setForm((f) => ({ ...f, status: v as any }))}>
-                  <SelectTrigger className="mt-2 border-2 rounded-lg px-3 py-2 bg-white">
+                  <SelectTrigger className="mt-2 border-2 rounded-lg px-3 py-2 bg-background">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>

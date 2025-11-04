@@ -197,19 +197,19 @@ const GradeInput = () => {
                       Learner's Name
                     </th>
                     {/* Written Works (30%) */}
-                    <th colSpan={11} className="p-2 text-center font-semibold bg-blue-50 border-r border-border">
+                    <th colSpan={11} className="p-2 text-center font-semibold bg-table-written border-r border-border">
                       Written Works (30%)
                     </th>
                     {/* Performance (40%) */}
-                    <th colSpan={8} className="p-2 text-center font-semibold bg-green-50 border-r border-border">
+                    <th colSpan={8} className="p-2 text-center font-semibold bg-table-performance border-r border-border">
                       Performance Tasks (40%)
                     </th>
                     {/* Exam (30%) */}
-                    <th colSpan={3} className="p-2 text-center font-semibold bg-amber-50 border-r border-border">
+                    <th colSpan={3} className="p-2 text-center font-semibold bg-table-exam border-r border-border">
                       Exam (30%)
                     </th>
                     {/* Total */}
-                    <th colSpan={2} className="p-2 text-center font-semibold bg-accent-50">
+                    <th colSpan={2} className="p-2 text-center font-semibold bg-table-total">
                       {selectedTerm === "midterm" ? "Midterm" : "Final Term"} Grade
                     </th>
                   </tr>
@@ -217,52 +217,52 @@ const GradeInput = () => {
                     <th className="p-2 text-left text-xs font-medium sticky left-0 z-30 bg-muted/50 border-r border-border">ID / Name</th>
                     {/* Written sub-columns */}
                     {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-                      <th key={`w${i}`} className="p-1 text-center font-medium w-12 bg-blue-50/50">{i}</th>
+                      <th key={`w${i}`} className="p-1 text-center font-medium w-12 bg-table-written/50">{i}</th>
                     ))}
-                    <th className="p-1 text-center font-medium w-12 bg-blue-50/50">Total</th>
-                    <th className="p-1 text-center font-medium w-12 bg-blue-50/50">PS</th>
-                    <th className="p-1 text-center font-medium w-12 bg-blue-50 border-r border-border">WS</th>
+                    <th className="p-1 text-center font-medium w-12 bg-table-written/50">Total</th>
+                    <th className="p-1 text-center font-medium w-12 bg-table-written/50">PS</th>
+                    <th className="p-1 text-center font-medium w-12 bg-table-written border-r border-border">WS</th>
                     {/* Performance sub-columns */}
                     {[1, 2, 3, 4, 5].map((i) => (
-                      <th key={`p${i}`} className="p-1 text-center font-medium w-12 bg-green-50/50">{i}</th>
+                      <th key={`p${i}`} className="p-1 text-center font-medium w-12 bg-table-performance/50">{i}</th>
                     ))}
-                    <th className="p-1 text-center font-medium w-12 bg-green-50/50">Total</th>
-                    <th className="p-1 text-center font-medium w-12 bg-green-50/50">PS</th>
-                    <th className="p-1 text-center font-medium w-12 bg-green-50 border-r border-border">WS</th>
+                    <th className="p-1 text-center font-medium w-12 bg-table-performance/50">Total</th>
+                    <th className="p-1 text-center font-medium w-12 bg-table-performance/50">PS</th>
+                    <th className="p-1 text-center font-medium w-12 bg-table-performance border-r border-border">WS</th>
                     {/* Exam sub-columns */}
-                    <th className="p-1 text-center font-medium w-12 bg-amber-50/50">Score</th>
-                    <th className="p-1 text-center font-medium w-12 bg-amber-50/50">PS</th>
-                    <th className="p-1 text-center font-medium w-12 bg-amber-50 border-r border-border">WS</th>
+                    <th className="p-1 text-center font-medium w-12 bg-table-exam/50">Score</th>
+                    <th className="p-1 text-center font-medium w-12 bg-table-exam/50">PS</th>
+                    <th className="p-1 text-center font-medium w-12 bg-table-exam border-r border-border">WS</th>
                     {/* Total columns */}
-                    <th className="p-1 text-center font-medium w-16 bg-accent-50/50">Initial<br/><span className="text-[10px] font-normal">(0-100)</span></th>
-                    <th className="p-1 text-center font-medium w-16 bg-accent-50">Grade<br/><span className="text-[10px] font-normal">(1.0-5.0)</span></th>
+                    <th className="p-1 text-center font-medium w-16 bg-table-total/50">Initial<br/><span className="text-[10px] font-normal">(0-100)</span></th>
+                    <th className="p-1 text-center font-medium w-16 bg-table-total">Grade<br/><span className="text-[10px] font-normal">(1.0-5.0)</span></th>
                   </tr>
                   <tr className="border-b border-border bg-muted/30 text-[10px]">
                     <th className="p-1 text-right font-medium sticky left-0 z-30 bg-muted/30 border-r border-border">HPS →</th>
-                    <th className="p-1 text-center text-muted-foreground bg-blue-50/30">10</th>
-                    <th className="p-1 text-center text-muted-foreground bg-blue-50/30">10</th>
-                    <th className="p-1 text-center text-muted-foreground bg-blue-50/30">100</th>
-                    <th className="p-1 text-center text-muted-foreground bg-blue-50/30">10</th>
-                    <th className="p-1 text-center text-muted-foreground bg-blue-50/30">10</th>
-                    <th className="p-1 text-center text-muted-foreground bg-blue-50/30">10</th>
-                    <th className="p-1 text-center text-muted-foreground bg-blue-50/30">50</th>
-                    <th className="p-1 text-center text-muted-foreground bg-blue-50/30">100</th>
-                    <th className="p-1 text-center text-muted-foreground bg-blue-50/30">300</th>
-                    <th className="p-1 text-center text-muted-foreground bg-blue-50/30">100%</th>
-                    <th className="p-1 text-center text-muted-foreground bg-blue-50 border-r border-border">30%</th>
-                    <th className="p-1 text-center text-muted-foreground bg-green-50/30">30</th>
-                    <th className="p-1 text-center text-muted-foreground bg-green-50/30">15</th>
-                    <th className="p-1 text-center text-muted-foreground bg-green-50/30">-</th>
-                    <th className="p-1 text-center text-muted-foreground bg-green-50/30">-</th>
-                    <th className="p-1 text-center text-muted-foreground bg-green-50/30">-</th>
-                    <th className="p-1 text-center text-muted-foreground bg-green-50/30">45</th>
-                    <th className="p-1 text-center text-muted-foreground bg-green-50/30">100%</th>
-                    <th className="p-1 text-center text-muted-foreground bg-green-50 border-r border-border">40%</th>
-                    <th className="p-1 text-center text-muted-foreground bg-amber-50/30">60</th>
-                    <th className="p-1 text-center text-muted-foreground bg-amber-50/30">100%</th>
-                    <th className="p-1 text-center text-muted-foreground bg-amber-50 border-r border-border">30%</th>
-                    <th className="p-1 text-center text-muted-foreground bg-accent-50/30">100%</th>
-                    <th className="p-1 text-center text-muted-foreground bg-accent-50">-</th>
+                    <th className="p-1 text-center text-muted-foreground bg-table-written/30">10</th>
+                    <th className="p-1 text-center text-muted-foreground bg-table-written/30">10</th>
+                    <th className="p-1 text-center text-muted-foreground bg-table-written/30">100</th>
+                    <th className="p-1 text-center text-muted-foreground bg-table-written/30">10</th>
+                    <th className="p-1 text-center text-muted-foreground bg-table-written/30">10</th>
+                    <th className="p-1 text-center text-muted-foreground bg-table-written/30">10</th>
+                    <th className="p-1 text-center text-muted-foreground bg-table-written/30">50</th>
+                    <th className="p-1 text-center text-muted-foreground bg-table-written/30">100</th>
+                    <th className="p-1 text-center text-muted-foreground bg-table-written/30">300</th>
+                    <th className="p-1 text-center text-muted-foreground bg-table-written/30">100%</th>
+                    <th className="p-1 text-center text-muted-foreground bg-table-written border-r border-border">30%</th>
+                    <th className="p-1 text-center text-muted-foreground bg-table-performance/30">30</th>
+                    <th className="p-1 text-center text-muted-foreground bg-table-performance/30">15</th>
+                    <th className="p-1 text-center text-muted-foreground bg-table-performance/30">-</th>
+                    <th className="p-1 text-center text-muted-foreground bg-table-performance/30">-</th>
+                    <th className="p-1 text-center text-muted-foreground bg-table-performance/30">-</th>
+                    <th className="p-1 text-center text-muted-foreground bg-table-performance/30">45</th>
+                    <th className="p-1 text-center text-muted-foreground bg-table-performance/30">100%</th>
+                    <th className="p-1 text-center text-muted-foreground bg-table-performance border-r border-border">40%</th>
+                    <th className="p-1 text-center text-muted-foreground bg-table-exam/30">60</th>
+                    <th className="p-1 text-center text-muted-foreground bg-table-exam/30">100%</th>
+                    <th className="p-1 text-center text-muted-foreground bg-table-exam border-r border-border">30%</th>
+                    <th className="p-1 text-center text-muted-foreground bg-table-total/30">100%</th>
+                    <th className="p-1 text-center text-muted-foreground bg-table-total">-</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -291,50 +291,50 @@ const GradeInput = () => {
                         </td>
                         {/* Written Works */}
                         {student.written.map((score) => (
-                          <td key={`w${score}`} className="p-1 text-center bg-blue-50/20">
+                          <td key={`w${score}`} className="p-1 text-center bg-table-written/20">
                             <div className="text-xs">{score}</div>
                           </td>
                         ))}
-                        <td className="p-1 text-center font-semibold bg-blue-50/30 text-xs">
+                        <td className="p-1 text-center font-semibold bg-table-written/30 text-xs">
                           {writtenTotal}
                         </td>
-                        <td className="p-1 text-center font-medium bg-blue-50/30 text-xs">
+                        <td className="p-1 text-center font-medium bg-table-written/30 text-xs">
                           {writtenPS}%
                         </td>
-                        <td className="p-1 text-center font-semibold bg-blue-50 border-r border-border text-xs">
+                        <td className="p-1 text-center font-semibold bg-table-written border-r border-border text-xs">
                           {writtenWS.toFixed(2)}
                         </td>
                         {/* Performance */}
                         {student.performance.map((score) => (
-                          <td key={`p${score}`} className="p-1 text-center bg-green-50/20">
+                          <td key={`p${score}`} className="p-1 text-center bg-table-performance/20">
                             <div className="text-xs">{score}</div>
                           </td>
                         ))}
-                        <td className="p-1 text-center font-semibold bg-green-50/30 text-xs">
+                        <td className="p-1 text-center font-semibold bg-table-performance/30 text-xs">
                           {performanceTotal}
                         </td>
-                        <td className="p-1 text-center font-medium bg-green-50/30 text-xs">
+                        <td className="p-1 text-center font-medium bg-table-performance/30 text-xs">
                           {performancePS}%
                         </td>
-                        <td className="p-1 text-center font-semibold bg-green-50 border-r border-border text-xs">
+                        <td className="p-1 text-center font-semibold bg-table-performance border-r border-border text-xs">
                           {performanceWS.toFixed(2)}
                         </td>
                         {/* Exam */}
-                        <td className="p-1 text-center bg-amber-50/20">
+                        <td className="p-1 text-center bg-table-exam/20">
                           <div className="text-xs">{student.exam}</div>
                         </td>
-                        <td className="p-1 text-center font-medium bg-amber-50/30 text-xs">
+                        <td className="p-1 text-center font-medium bg-table-exam/30 text-xs">
                           {examPS}%
                         </td>
-                        <td className="p-1 text-center font-semibold bg-amber-50 border-r border-border text-xs">
+                        <td className="p-1 text-center font-semibold bg-table-exam border-r border-border text-xs">
                           {examWS.toFixed(2)}
                         </td>
                         {/* Totals */}
-                        <td className="p-1 text-center font-bold bg-accent-50/30 text-xs">
+                        <td className="p-1 text-center font-bold bg-table-total/30 text-xs">
                           {initialGrade.toFixed(2)}
                         </td>
                         <td className={`p-1 text-center font-bold text-xs ${
-                          parseFloat(finalGrade) <= 3.0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                          parseFloat(finalGrade) <= 3.0 ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'
                         }`}>
                           {finalGrade}
                         </td>

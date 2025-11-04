@@ -112,6 +112,12 @@ const StudentSettings = () => {
     setPasswordData({ currentPassword: "", newPassword: "", confirmPassword: "" });
   };
 
+  const handleForgotPassword = () => {
+    const emailToUse = user?.email || profileData.email || "your email";
+    setAlert({ type: "success", message: `Recovery link sent to ${emailToUse}. Check your inbox.` });
+    // TODO: integrate with backend password recovery endpoint
+  };
+
   // Course color handlers
   const handleCourseColorChange = (courseId: string, newColor: string) => {
     setCourseColors(prev =>
@@ -204,6 +210,7 @@ const StudentSettings = () => {
                         id="avatar-upload"
                         type="file"
                         accept="image/*"
+                        title="Upload profile picture"
                         onChange={(e) => {
                           const file = e.target.files?.[0];
                           if (!file) return;
@@ -305,9 +312,19 @@ const StudentSettings = () => {
                 </div>
               </div>
 
-              <Button onClick={handleChangePassword} className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700">
+              <Button onClick={handleChangePassword} className="w-full sm:w-auto">
                 Change Password
               </Button>
+
+              <div className="mt-3">
+                <button
+                  type="button"
+                  onClick={handleForgotPassword}
+                  className="text-sm text-blue-600 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded"
+                >
+                  Forgot password?
+                </button>
+              </div>
             </CardContent>
           </Card>
         </div>
@@ -382,7 +399,7 @@ const StudentSettings = () => {
                 </div>
               </div>
 
-              <Button onClick={handleSavePreferences} className="w-full h-8 text-xs bg-blue-600 hover:bg-blue-700">
+              <Button onClick={handleSavePreferences} className="w-full h-8 text-xs">
                 Save
               </Button>
             </CardContent>
@@ -404,7 +421,14 @@ const StudentSettings = () => {
                     className="p-2 border rounded-lg flex items-center justify-between gap-3 hover:shadow-md transition-shadow"
                   >
                     <div className="flex items-center gap-3 min-w-0">
-                      <div className="h-8 w-8 rounded-md flex items-center justify-center text-xs font-medium text-white" style={{ background: course.color }} />
+                      <div 
+                        className="h-8 w-8 rounded-md flex items-center justify-center text-xs font-medium text-white"
+                        data-color={course.color}
+                      >
+                        <style dangerouslySetInnerHTML={{
+                          __html: `[data-color="${course.color}"] { background-color: ${course.color}; }`
+                        }} />
+                      </div>
                       <div className="min-w-0">
                         <p className="font-medium text-sm text-foreground truncate">{course.courseName}</p>
                         <p className="text-xs text-muted-foreground">{course.color.toUpperCase()}</p>
@@ -456,7 +480,7 @@ const StudentSettings = () => {
                       {/* compact toggle button */}
                       <button
                         type="button"
-                        aria-pressed={preferences.enableReminders}
+                        aria-label="Toggle reminders"
                         onClick={() => {
                           const newValue = !preferences.enableReminders;
                           handlePreferenceChange("enableReminders", newValue);
@@ -465,9 +489,9 @@ const StudentSettings = () => {
                             message: newValue ? "Reminders enabled" : "Reminders disabled" 
                           });
                         }}
-                        className={`relative inline-flex h-6 w-10 items-center rounded-full transition-colors border-2 ${preferences.enableReminders ? 'bg-blue-600 border-blue-600' : 'bg-muted border-muted-foreground/20'}`}
+                        className={`relative inline-flex h-6 w-10 items-center rounded-full transition-colors border-2 ${preferences.enableReminders ? 'bg-primary border-primary' : 'bg-muted border-muted-foreground/20'}`}
                       >
-                        <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${preferences.enableReminders ? 'translate-x-4' : 'translate-x-1'}`} />
+                        <span className={`inline-block h-4 w-4 transform rounded-full bg-background transition-transform ${preferences.enableReminders ? 'translate-x-4' : 'translate-x-1'}`} />
                       </button>
                       <span className="text-xs font-medium">Enable reminders</span>
                     </div>
@@ -519,7 +543,7 @@ const StudentSettings = () => {
                   <div className="flex items-center gap-2">
                     <button
                       type="button"
-                      aria-pressed={preferences.enableGradeAlerts}
+                      aria-label="Toggle grade alerts"
                       onClick={() => {
                         const newValue = !preferences.enableGradeAlerts;
                         handlePreferenceChange("enableGradeAlerts", newValue);
@@ -528,9 +552,9 @@ const StudentSettings = () => {
                           message: newValue ? "Grade alerts enabled" : "Grade alerts disabled" 
                         });
                       }}
-                      className={`relative inline-flex h-6 w-10 items-center rounded-full transition-colors border-2 ${preferences.enableGradeAlerts ? 'bg-blue-600 border-blue-600' : 'bg-muted border-muted-foreground/20'}`}
+                      className={`relative inline-flex h-6 w-10 items-center rounded-full transition-colors border-2 ${preferences.enableGradeAlerts ? 'bg-primary border-primary' : 'bg-muted border-muted-foreground/20'}`}
                     >
-                      <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${preferences.enableGradeAlerts ? 'translate-x-4' : 'translate-x-1'}`} />
+                      <span className={`inline-block h-4 w-4 transform rounded-full bg-background transition-transform ${preferences.enableGradeAlerts ? 'translate-x-4' : 'translate-x-1'}`} />
                     </button>
                     <span className="text-xs font-medium">Enable alerts</span>
                   </div>
@@ -584,7 +608,7 @@ const StudentSettings = () => {
                   <div className="flex items-start gap-2">
                     <button
                       type="button"
-                      aria-pressed={preferences.hideCompletedCourses}
+                      aria-label="Toggle hide completed courses"
                       onClick={() => {
                         const newValue = !preferences.hideCompletedCourses;
                         handlePreferenceChange("hideCompletedCourses", newValue);
@@ -593,9 +617,9 @@ const StudentSettings = () => {
                           message: newValue ? "Completed courses hidden" : "Completed courses shown" 
                         });
                       }}
-                      className={`relative inline-flex h-6 w-10 items-center rounded-full transition-colors border-2 flex-shrink-0 mt-0.5 ${preferences.hideCompletedCourses ? 'bg-blue-600 border-blue-600' : 'bg-muted border-muted-foreground/20'}`}
+                      className={`relative inline-flex h-6 w-10 items-center rounded-full transition-colors border-2 flex-shrink-0 mt-0.5 ${preferences.hideCompletedCourses ? 'bg-primary border-primary' : 'bg-muted border-muted-foreground/20'}`}
                     >
-                      <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${preferences.hideCompletedCourses ? 'translate-x-4' : 'translate-x-1'}`} />
+                      <span className={`inline-block h-4 w-4 transform rounded-full bg-background transition-transform ${preferences.hideCompletedCourses ? 'translate-x-4' : 'translate-x-1'}`} />
                     </button>
                     <div>
                       <span className="font-medium text-xs">Hide Completed</span>

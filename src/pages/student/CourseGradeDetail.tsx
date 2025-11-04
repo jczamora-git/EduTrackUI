@@ -334,11 +334,11 @@ const CourseGradeDetail = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              <div className="flex items-center justify-between p-3 bg-white/50 rounded-lg">
+              <div className="flex items-center justify-between p-3 bg-card/50 rounded-lg">
                 <span className="font-medium">Midterm Grade</span>
                 <span className="text-lg font-bold text-primary">{transmute(midtermWeightedScore)}</span>
               </div>
-              <div className="flex items-center justify-between p-3 bg-white/50 rounded-lg">
+              <div className="flex items-center justify-between p-3 bg-card/50 rounded-lg">
                 <span className="font-medium">Final Term Grade</span>
                 <span className="text-lg font-bold text-primary">{transmute(finaltermWeightedScore)}</span>
               </div>

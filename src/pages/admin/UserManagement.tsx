@@ -119,10 +119,10 @@ const UserManagement = () => {
         </div>
 
         <Card className="shadow-lg border-0">
-          <CardHeader className="bg-gradient-to-r from-slate-50 to-slate-100 border-b pb-6">
+          <CardHeader className="bg-gradient-to-r from-muted/50 to-muted border-b pb-6">
             <div className="flex items-center justify-between">
               <div>
-                <CardTitle className="text-2xl font-bold text-slate-900">All Users ({filteredUsers.length})</CardTitle>
+                <CardTitle className="text-2xl font-bold">All Users ({filteredUsers.length})</CardTitle>
                 <CardDescription className="text-base">Manage all system users and their roles</CardDescription>
               </div>
               <div className="flex items-center gap-3">
@@ -137,7 +137,7 @@ const UserManagement = () => {
                 </div>
                 <div className="w-40">
                   <Select value={roleFilter} onValueChange={(v) => setRoleFilter(v)}>
-                    <SelectTrigger className="border-2 focus:border-accent-500 rounded-lg px-3 py-2 bg-white">
+                    <SelectTrigger className="border-2 focus:border-accent-500 rounded-lg px-3 py-2 bg-background">
                       <SelectValue>{roleFilter === "all" ? "All Roles" : roleFilter.charAt(0).toUpperCase() + roleFilter.slice(1)}</SelectValue>
                     </SelectTrigger>
                     <SelectContent>
@@ -170,8 +170,8 @@ const UserManagement = () => {
                     key={user.id}
                     className={`rounded-2xl border-2 transition-all duration-300 flex flex-col overflow-hidden ${
                       user.status === "inactive"
-                        ? "bg-slate-50 border-slate-200 opacity-70"
-                        : "bg-gradient-to-br from-white to-slate-50 border-accent-200 hover:border-accent-400 hover:shadow-xl"
+                        ? "bg-muted/50 border-muted opacity-70"
+                        : "bg-gradient-to-br from-card to-muted/30 border-accent-200 hover:border-accent-400 hover:shadow-xl"
                     }`}
                   >
                     <div className={user.status === "inactive" ? "p-5 opacity-60 pointer-events-none" : "p-5"}>
@@ -183,7 +183,7 @@ const UserManagement = () => {
                             </span>
                           </div>
                           <div>
-                            <p className="font-bold text-lg text-slate-900">{user.firstName} {user.lastName}</p>
+                            <p className="font-bold text-lg">{user.firstName} {user.lastName}</p>
                             <p className="text-sm text-muted-foreground">{user.email}</p>
                           </div>
                         </div>
@@ -205,7 +205,7 @@ const UserManagement = () => {
                       </div>
                     </div>
 
-                    <div className="mt-auto p-5 border-t border-accent-100 bg-slate-50">
+                    <div className="mt-auto p-5 border-t border-accent-100 bg-muted/30">
                       <div className="flex gap-3">
                         <Button
                           variant="outline"
@@ -240,8 +240,8 @@ const UserManagement = () => {
                     key={user.id}
                     className={`flex items-center justify-between p-5 border-2 rounded-2xl transition-all duration-300 ${
                       user.status === "inactive"
-                        ? "bg-slate-50 border-slate-200 opacity-70"
-                        : "bg-white border-accent-100 hover:bg-accent-50/50 hover:border-accent-300 hover:shadow-md"
+                        ? "bg-muted/50 border-muted opacity-70"
+                        : "bg-card border-accent-100 hover:bg-accent-50/50 hover:border-accent-300 hover:shadow-md"
                     }`}
                   >
                     <div className="flex items-center gap-4">
@@ -251,7 +251,7 @@ const UserManagement = () => {
                         </span>
                       </div>
                       <div>
-                        <p className="font-bold text-base text-slate-900">{user.firstName} {user.lastName}</p>
+                        <p className="font-bold text-base">{user.firstName} {user.lastName}</p>
                         <p className="text-sm text-muted-foreground">{user.email}</p>
                       </div>
                     </div>
@@ -310,7 +310,7 @@ const UserManagement = () => {
             <div className="space-y-5 px-2">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="firstName" className="font-semibold text-lg text-slate-900">First Name *</Label>
+                  <Label htmlFor="firstName" className="font-semibold text-lg">First Name *</Label>
                   <Input 
                     id="firstName" 
                     value={form.firstName} 
@@ -320,7 +320,7 @@ const UserManagement = () => {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="lastName" className="font-semibold text-lg text-slate-900">Last Name *</Label>
+                  <Label htmlFor="lastName" className="font-semibold text-lg">Last Name *</Label>
                   <Input 
                     id="lastName" 
                     value={form.lastName} 
@@ -331,7 +331,7 @@ const UserManagement = () => {
                 </div>
               </div>
               <div>
-                <Label htmlFor="email" className="font-semibold text-lg text-slate-900">Email *</Label>
+                <Label htmlFor="email" className="font-semibold text-lg">Email *</Label>
                 <Input 
                   id="email" 
                   type="email" 
@@ -342,9 +342,9 @@ const UserManagement = () => {
                 />
               </div>
               <div>
-                <Label htmlFor="role" className="font-semibold text-lg text-slate-900">Role *</Label>
+                <Label htmlFor="role" className="font-semibold text-lg">Role *</Label>
                 <Select value={form.role} onValueChange={(v) => setForm((f) => ({ ...f, role: v as any }))}>
-                  <SelectTrigger className="mt-2 py-3 text-base border-2 focus:border-accent-500 rounded-lg">
+                  <SelectTrigger className="mt-2 py-3 text-base border-2 focus:border-accent-500 rounded-lg bg-background">
                     <SelectValue>{form.role.charAt(0).toUpperCase() + form.role.slice(1)}</SelectValue>
                   </SelectTrigger>
                   <SelectContent>
@@ -355,8 +355,8 @@ const UserManagement = () => {
                 </Select>
               </div>
               
-              <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-4 mt-4">
-                <p className="text-sm text-blue-900 font-medium">
+              <div className="bg-muted/20 border-2 border-muted rounded-lg p-4 mt-4">
+                <p className="text-sm text-muted-foreground font-medium">
                   ✓ New users are created with <span className="font-bold">Active</span> status by default
                 </p>
               </div>
@@ -380,7 +380,7 @@ const UserManagement = () => {
             <div className="space-y-5 px-2">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="edit-firstName" className="font-semibold text-lg text-slate-900">First Name *</Label>
+                  <Label htmlFor="edit-firstName" className="font-semibold text-lg">First Name *</Label>
                   <Input 
                     id="edit-firstName" 
                     value={form.firstName} 
@@ -390,7 +390,7 @@ const UserManagement = () => {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="edit-lastName" className="font-semibold text-lg text-slate-900">Last Name *</Label>
+                  <Label htmlFor="edit-lastName" className="font-semibold text-lg">Last Name *</Label>
                   <Input 
                     id="edit-lastName" 
                     value={form.lastName} 
@@ -401,7 +401,7 @@ const UserManagement = () => {
                 </div>
               </div>
               <div>
-                <Label htmlFor="edit-email" className="font-semibold text-lg text-slate-900">Email *</Label>
+                <Label htmlFor="edit-email" className="font-semibold text-lg">Email *</Label>
                 <Input 
                   id="edit-email" 
                   type="email" 
@@ -412,9 +412,9 @@ const UserManagement = () => {
                 />
               </div>
               <div>
-                <Label htmlFor="edit-role" className="font-semibold text-lg text-slate-900">Role *</Label>
+                <Label htmlFor="edit-role" className="font-semibold text-lg">Role *</Label>
                 <Select value={form.role} onValueChange={(v) => setForm((f) => ({ ...f, role: v as any }))}>
-                  <SelectTrigger className="mt-2 py-3 text-base border-2 focus:border-accent-500 rounded-lg">
+                  <SelectTrigger className="mt-2 py-3 text-base border-2 focus:border-accent-500 rounded-lg bg-background">
                     <SelectValue>{form.role.charAt(0).toUpperCase() + form.role.slice(1)}</SelectValue>
                   </SelectTrigger>
                   <SelectContent>
@@ -425,9 +425,9 @@ const UserManagement = () => {
                 </Select>
               </div>
               <div>
-                <Label htmlFor="edit-status" className="font-semibold text-lg text-slate-900">Status</Label>
+                <Label htmlFor="edit-status" className="font-semibold text-lg">Status</Label>
                 <Select value={form.status} onValueChange={(v) => setForm((f) => ({ ...f, status: v }))}>
-                  <SelectTrigger className="mt-2 py-3 text-base border-2 focus:border-accent-500 rounded-lg">
+                  <SelectTrigger className="mt-2 py-3 text-base border-2 focus:border-accent-500 rounded-lg bg-background">
                     <SelectValue>{form.status.charAt(0).toUpperCase() + form.status.slice(1)}</SelectValue>
                   </SelectTrigger>
                   <SelectContent>
@@ -445,7 +445,7 @@ const UserManagement = () => {
                 </Button>
                 <Button 
                   variant="outline" 
-                  className="flex-1 font-semibold text-base py-3 border-2 rounded-lg hover:bg-slate-50" 
+                  className="flex-1 font-semibold text-base py-3 border-2 rounded-lg hover:bg-muted/50" 
                   onClick={() => setIsEditOpen(false)}
                 >
                   Cancel

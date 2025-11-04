@@ -197,7 +197,7 @@ const SectionDetail = () => {
           <Button
             variant="ghost"
             onClick={() => navigate("/admin/users/sections")}
-            className="mb-6 gap-2 text-base font-medium hover:bg-slate-100"
+            className="mb-6 gap-2 text-base font-medium hover:bg-muted"
           >
             <ArrowLeft className="h-5 w-5" />
             Back to Sections
@@ -217,7 +217,7 @@ const SectionDetail = () => {
             <Badge variant={section.status === "active" ? "default" : "outline"} className={`text-base font-semibold px-4 py-2 ${
               section.status === "active"
                 ? "bg-gradient-to-r from-primary to-accent text-white"
-                : "bg-slate-200 text-slate-700"
+                : "bg-muted/30 text-muted-foreground"
             }`}>
               {section.status.charAt(0).toUpperCase() + section.status.slice(1)}
             </Badge>
@@ -225,9 +225,9 @@ const SectionDetail = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
-          <Card className="shadow-lg border-0 bg-gradient-to-br from-white to-slate-50">
+          <Card className="shadow-lg border-0 bg-gradient-to-br from-card to-muted/20">
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-semibold text-slate-600">Total Students</CardTitle>
+              <CardTitle className="text-sm font-semibold text-muted-foreground">Total Students</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">{section.students.length}</div>
@@ -235,12 +235,12 @@ const SectionDetail = () => {
             </CardContent>
           </Card>
           
-          <Card className="shadow-lg border-0 bg-gradient-to-br from-white to-slate-50">
+          <Card className="shadow-lg border-0 bg-gradient-to-br from-card to-muted/20">
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-semibold text-slate-600">Section Status</CardTitle>
+              <CardTitle className="text-sm font-semibold text-muted-foreground">Section Status</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className={`text-2xl font-bold ${section.status === "active" ? "text-accent-600" : "text-slate-600"}`}>
+              <div className={`text-2xl font-bold ${section.status === "active" ? "text-accent-600" : "text-muted-foreground"}`}>
                 {section.status === "active" ? "Active" : "Inactive"}
               </div>
               <p className="text-sm text-muted-foreground mt-2">
@@ -251,10 +251,10 @@ const SectionDetail = () => {
         </div>
 
         <Card className="shadow-lg border-0">
-          <CardHeader className="bg-gradient-to-r from-slate-50 to-slate-100 border-b pb-6">
+          <CardHeader className="bg-gradient-to-r from-muted/50 to-muted border-b pb-6">
             <div className="flex items-center justify-between">
               <div>
-                <CardTitle className="text-2xl font-bold text-slate-900">Manage Students</CardTitle>
+                <CardTitle className="text-2xl font-bold">Manage Students</CardTitle>
                 <CardDescription className="text-base">Add or remove students from section {section.name}</CardDescription>
               </div>
               <div className="flex items-center gap-3">
@@ -328,14 +328,14 @@ const SectionDetail = () => {
                   {sortedStudents.map((student, idx) => (
                     <div
                       key={idx}
-                      className="flex items-center justify-between p-4 bg-gradient-to-r from-slate-50 to-white border-2 border-slate-200 rounded-xl hover:border-accent-300 hover:shadow-md transition-all group"
+                      className="flex items-center justify-between p-4 bg-gradient-to-r from-card to-muted/20 border-2 border-border/30 rounded-xl hover:border-accent-300 hover:shadow-md transition-all group"
                     >
                       <div className="flex items-center gap-4">
                         <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-semibold text-base shadow-md">
                           {student.charAt(0).toUpperCase()}
                         </div>
                         <div>
-                          <p className="font-semibold text-slate-900 text-base">{student}</p>
+                          <p className="font-semibold text-base">{student}</p>
                           <p className="text-sm text-muted-foreground">Student in section</p>
                         </div>
                       </div>
@@ -359,7 +359,7 @@ const SectionDetail = () => {
                   {sortedStudents.map((student, idx) => {
                     const studentObj = mockStudents.find((m) => m.name === student);
                     return (
-                      <div key={idx} className="p-4 border rounded-xl bg-white shadow-sm hover:shadow-md transition-all">
+                      <div key={idx} className="p-4 border rounded-xl bg-card shadow-sm hover:shadow-md transition-all">
                         <div className="flex items-center justify-between mb-3">
                           <div className="flex items-center gap-3">
                             <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-semibold">
@@ -409,7 +409,7 @@ const SectionDetail = () => {
             </DialogHeader>
             <div className="space-y-5 px-2">
               <div>
-                <Label htmlFor="student-name" className="font-semibold text-lg text-slate-900">Student Name / ID *</Label>
+                <Label htmlFor="student-name" className="font-semibold text-lg">Student Name / ID *</Label>
                 <div className="relative mt-2">
                   <Input
                     id="student-name"
@@ -428,7 +428,7 @@ const SectionDetail = () => {
                   {showSuggestions && suggestions.length > 0 && (
                     <div
                       ref={suggestionsRef}
-                      className="absolute top-full left-0 right-0 mt-2 bg-white border-2 border-primary/30 rounded-xl shadow-xl z-50 max-h-56 overflow-y-auto"
+                      className="absolute top-full left-0 right-0 mt-2 bg-background border-2 border-primary/30 rounded-xl shadow-xl z-50 max-h-56 overflow-y-auto"
                     >
                       <div className="p-2">
                         {suggestions.map((student) => (
@@ -438,7 +438,7 @@ const SectionDetail = () => {
                               className="px-4 py-3 hover:bg-gradient-to-r hover:from-primary/10 hover:to-accent/10 cursor-pointer rounded-lg flex justify-between items-center transition-all group mb-1"
                           >
                             <div className="flex-1">
-                                <p className="font-semibold text-sm text-slate-900 group-hover:text-primary transition-colors">{student.name}</p>
+                                <p className="font-semibold text-sm group-hover:text-primary transition-colors">{student.name}</p>
                               <p className="text-xs text-muted-foreground">{student.id}</p>
                             </div>
                               <span className="text-xs font-bold px-3 py-1 bg-gradient-to-r from-primary/20 to-accent/20 text-primary rounded-full">
@@ -462,7 +462,7 @@ const SectionDetail = () => {
                 </Button>
                 <Button
                   variant="outline"
-                  className="flex-1 border-2 font-semibold py-3 rounded-lg transition-all hover:bg-slate-50"
+                  className="flex-1 border-2 font-semibold py-3 rounded-lg transition-all hover:bg-muted/50"
                   onClick={() => {
                     setIsAddStudentOpen(false);
                     setNewStudentInput("");

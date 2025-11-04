@@ -4,6 +4,7 @@ import { Button } from "./ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSidebar } from "@/hooks/use-sidebar";
 import { useAuth } from "@/hooks/useAuth";
+import { useTheme } from "next-themes";
 import {
   LayoutDashboard,
   Users,
@@ -21,7 +22,10 @@ import {
   Award,
   Calendar,
   BookOpen,
-  Grid3x3
+  Grid3x3,
+  Sun,
+  Moon,
+  Monitor
 } from "lucide-react";
 
 interface SidebarItemProps {
@@ -54,6 +58,7 @@ export const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, logout } = useAuth();
+  const { theme, setTheme } = useTheme();
   const [expandedMenus, setExpandedMenus] = useState<Record<string, boolean>>({});
 
   // Check if any admin submenu is active (includes the main users page)
@@ -67,6 +72,38 @@ export const Sidebar = () => {
       ...prev,
       [menuId]: !prev[menuId],
     }));
+  };
+
+  const cycleTheme = () => {
+    if (theme === 'light') {
+      setTheme('dark');
+    } else if (theme === 'dark') {
+      setTheme('system');
+    } else {
+      setTheme('light');
+    }
+  };
+
+  const getThemeIcon = () => {
+    switch (theme) {
+      case 'light':
+        return <Sun className="h-5 w-5" />;
+      case 'dark':
+        return <Moon className="h-5 w-5" />;
+      default:
+        return <Monitor className="h-5 w-5" />;
+    }
+  };
+
+  const getThemeLabel = () => {
+    switch (theme) {
+      case 'light':
+        return 'Light Mode';
+      case 'dark':
+        return 'Dark Mode';
+      default:
+        return 'System';
+    }
   };
 
   const handleLogout = () => {
@@ -127,17 +164,22 @@ export const Sidebar = () => {
     <div
       className={cn(
         // make the sidebar sticky so it doesn't scroll with the main content
-        "sticky top-0 h-screen bg-white border-r flex flex-col transition-all duration-300 z-20",
+        "sticky top-0 h-screen bg-background border-r border-border flex flex-col transition-all duration-300 z-20",
         isOpen ? "w-64" : "w-20"
       )}
     >
       <div className="p-6 flex justify-between items-center">
-        {isOpen && <span className="text-xl font-bold text-blue-700">EduTrack</span>}
+        {isOpen && (
+          <div className="flex items-center gap-2">
+            <img src="/vector.png" alt="EduTrack logo" className="h-6 w-6" />
+            <span className="text-xl font-bold text-blue-700">EduTrack</span>
+          </div>
+        )}
         <Button
           variant="ghost"
           size="icon"
           onClick={toggle}
-          className="hover:bg-gray-100"
+          className="hover:bg-muted"
         >
           <ChevronLeft className={cn("h-6 w-6", !isOpen && "rotate-180")} />
         </Button>
@@ -253,11 +295,25 @@ export const Sidebar = () => {
         })}
       </div>
 
-      <div className="border-t p-4">
+      <div className="border-t p-4 space-y-2">
+        {/* Theme Toggle */}
+        <button
+          onClick={cycleTheme}
+          className={cn(
+            "w-full flex items-center gap-2 p-3 rounded-lg text-muted-foreground hover:bg-muted/80 hover:text-foreground transition-all",
+            !isOpen && "justify-center"
+          )}
+          title={isOpen ? undefined : getThemeLabel()}
+        >
+          {getThemeIcon()}
+          {isOpen && <span>{getThemeLabel()}</span>}
+        </button>
+
+        {/* Logout Button */}
         <button
           onClick={handleLogout}
           className={cn(
-            "w-full flex items-center gap-2 p-3 rounded-lg text-red-600 hover:bg-red-50 transition-all",
+            "w-full flex items-center gap-2 p-3 rounded-lg text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all",
             !isOpen && "justify-center"
           )}
         >

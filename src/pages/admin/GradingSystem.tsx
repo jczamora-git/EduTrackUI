@@ -124,9 +124,9 @@ const GradingSystem = () => {
           <div className="lg:col-span-2 space-y-6">
             {/* Grade Scale Configuration - Compact Table View */}
             <Card className="shadow-lg border-0">
-              <CardHeader className="bg-gradient-to-r from-slate-50 to-slate-100 border-b pb-4">
+              <CardHeader className="bg-gradient-to-r from-muted/50 to-muted border-b pb-4">
                 <div>
-                  <CardTitle className="text-lg font-bold text-slate-900 flex items-center gap-2">
+                  <CardTitle className="text-lg font-bold flex items-center gap-2">
                     <Award className="h-5 w-5 text-primary" />
                     Grade Scale
                   </CardTitle>
@@ -138,16 +138,16 @@ const GradingSystem = () => {
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="border-b-2 border-accent-200">
-                        <th className="text-left py-2 px-3 font-semibold text-slate-900">Grade</th>
-                        <th className="text-center py-2 px-3 font-semibold text-slate-900">Min %</th>
-                        <th className="text-center py-2 px-3 font-semibold text-slate-900">Max %</th>
-                        <th className="text-center py-2 px-3 font-semibold text-slate-900">Points</th>
-                        <th className="text-left py-2 px-3 font-semibold text-slate-900">Description</th>
+                        <th className="text-left py-2 px-3 font-semibold">Grade</th>
+                        <th className="text-center py-2 px-3 font-semibold">Min %</th>
+                        <th className="text-center py-2 px-3 font-semibold">Max %</th>
+                        <th className="text-center py-2 px-3 font-semibold">Points</th>
+                        <th className="text-left py-2 px-3 font-semibold">Description</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-accent-100">
                       {gradeRanges.map((grade, index) => (
-                        <tr key={index} className="hover:bg-slate-50 transition-colors">
+                        <tr key={index} className="hover:bg-muted/50 transition-colors">
                           <td className="py-2 px-3">
                             <Badge className="bg-gradient-to-r from-primary to-accent text-white font-bold text-base w-12 h-10 flex items-center justify-center rounded-lg">
                               {grade.grade}
@@ -210,9 +210,9 @@ const GradingSystem = () => {
 
             {/* Grade Computation Weights */}
             <Card className="shadow-lg border-0">
-              <CardHeader className="bg-gradient-to-r from-slate-50 to-slate-100 border-b pb-4">
+              <CardHeader className="bg-gradient-to-r from-muted/50 to-muted border-b pb-4">
                 <div>
-                  <CardTitle className="text-lg font-bold text-slate-900 flex items-center gap-2">
+                  <CardTitle className="text-lg font-bold flex items-center gap-2">
                     <TrendingUp className="h-5 w-5 text-primary" />
                     Computation Weights
                   </CardTitle>
@@ -228,7 +228,7 @@ const GradingSystem = () => {
                 }`}>
                   <span>Total Weight</span>
                   <div className="flex items-center gap-2">
-                    <div className="w-32 h-2 bg-slate-200 rounded-full overflow-hidden">
+                    <div className="w-32 h-2 bg-muted/30 rounded-full overflow-hidden">
                       <div 
                         className={`h-full transition-all ${
                           totalWeight === 100 ? "bg-green-500" : "bg-amber-500"
@@ -245,10 +245,10 @@ const GradingSystem = () => {
                 {/* Computation Categories */}
                 <div className="space-y-3">
                   {computationWeights.map((category, index) => (
-                    <div key={index} className="border border-accent-200 rounded-lg p-3 bg-gradient-to-br from-white to-slate-50">
+                    <div key={index} className="border border-accent-200 rounded-lg p-3 bg-gradient-to-br from-card to-muted/30">
                       <div className="flex items-end gap-3 mb-2">
                         <div className="flex-1">
-                          <p className="font-semibold text-slate-900 text-sm">{category.name}</p>
+                          <p className="font-semibold text-sm">{category.name}</p>
                           <p className="text-xs text-muted-foreground">{category.components.join(", ")}</p>
                         </div>
                         <div className="flex items-center gap-2">
@@ -260,13 +260,13 @@ const GradingSystem = () => {
                             onChange={(e) => handleWeightChange(index, parseInt(e.target.value))}
                             className="w-20 h-8 text-center border-1 rounded p-1 text-sm font-semibold"
                           />
-                          <span className="text-sm font-semibold text-slate-700 w-6">%</span>
+                          <span className="text-sm font-semibold w-6">%</span>
                         </div>
                       </div>
                       
                       {/* Weight Bar */}
                       <div className="flex items-center gap-2">
-                        <div className="flex-1 h-2 bg-slate-200 rounded-full overflow-hidden">
+                        <div className="flex-1 h-2 bg-muted/30 rounded-full overflow-hidden">
                           <div 
                             className="h-full bg-gradient-to-r from-primary to-accent transition-all"
                             style={{ width: `${Math.min(category.weight, 100)}%` }}
@@ -291,14 +291,14 @@ const GradingSystem = () => {
           {/* Right Sidebar - Quick Reference */}
           <div className="space-y-4">
             {/* Calculation Formula */}
-            <Card className="shadow-lg border-0 bg-blue-50">
-              <CardHeader className="bg-blue-100 border-b pb-3">
+        <Card className="shadow-lg border-0 bg-primary/10">
+          <CardHeader className="bg-primary/20 border-b pb-3">
                 <CardTitle className="text-sm font-bold text-blue-900 flex items-center gap-2">
                   📊 Calculation Formula
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-3">
-                <div className="bg-white rounded p-2 font-mono text-xs space-y-1 text-blue-900 max-h-32 overflow-y-auto">
+                <div className="bg-card rounded p-2 font-mono text-xs space-y-1 text-muted-foreground max-h-32 overflow-y-auto">
                   <p className="break-words">
                     <span className="font-bold">Final Grade =</span>
                   </p>
@@ -314,19 +314,19 @@ const GradingSystem = () => {
 
             {/* Grade Reference */}
             <Card className="shadow-lg border-0">
-              <CardHeader className="bg-gradient-to-r from-slate-50 to-slate-100 border-b pb-3">
-                <CardTitle className="text-sm font-bold text-slate-900">Grade Reference</CardTitle>
+              <CardHeader className="bg-gradient-to-r from-muted/50 to-muted border-b pb-3">
+                <CardTitle className="text-sm font-bold">Grade Reference</CardTitle>
               </CardHeader>
               <CardContent className="p-3">
                 <div className="space-y-2 max-h-96 overflow-y-auto">
                   {gradeRanges.map((grade) => (
-                    <div key={grade.grade} className="flex items-center justify-between text-xs p-2 bg-slate-50 rounded">
+                    <div key={grade.grade} className="flex items-center justify-between text-xs p-2 bg-card/50 rounded">
                       <div className="flex items-center gap-2">
                         <Badge className="bg-gradient-to-r from-primary to-accent text-white font-bold w-8 h-8 flex items-center justify-center rounded">
                           {grade.grade}
                         </Badge>
                         <div>
-                          <p className="font-semibold text-slate-900">{grade.description}</p>
+                          <p className="font-semibold">{grade.description}</p>
                           <p className="text-muted-foreground">{grade.minPercentage}–{grade.maxPercentage}%</p>
                         </div>
                       </div>
@@ -338,14 +338,14 @@ const GradingSystem = () => {
 
             {/* Weight Breakdown */}
             <Card className="shadow-lg border-0">
-              <CardHeader className="bg-gradient-to-r from-slate-50 to-slate-100 border-b pb-3">
-                <CardTitle className="text-sm font-bold text-slate-900">Weight Breakdown</CardTitle>
+              <CardHeader className="bg-gradient-to-r from-muted/50 to-muted border-b pb-3">
+                <CardTitle className="text-sm font-bold">Weight Breakdown</CardTitle>
               </CardHeader>
               <CardContent className="p-3">
                 <div className="space-y-2">
                   {computationWeights.map((cat) => (
-                    <div key={cat.name} className="flex items-center justify-between text-xs p-2 bg-slate-50 rounded">
-                      <span className="font-semibold text-slate-900">{cat.name}</span>
+                    <div key={cat.name} className="flex items-center justify-between text-xs p-2 bg-card/50 rounded">
+                      <span className="font-semibold">{cat.name}</span>
                       <Badge variant="secondary" className="bg-gradient-to-r from-primary/10 to-accent/10 text-primary font-bold text-xs">
                         {cat.weight}%
                       </Badge>

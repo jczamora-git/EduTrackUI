@@ -221,7 +221,7 @@ const Students = () => {
         </div>
 
         <Card className="shadow-lg border-0">
-          <CardHeader className="bg-gradient-to-r from-slate-50 to-slate-100 border-b pb-6">
+          <CardHeader className="bg-gradient-to-r from-muted/50 to-muted border-b pb-6">
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle className="text-2xl font-bold">All Students ({filteredStudents.length})</CardTitle>
@@ -236,14 +236,14 @@ const Students = () => {
                   placeholder="Search students by name or ID..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-12 py-2.5 text-base border-2 focus:border-accent-500 rounded-xl bg-white shadow-sm"
+                  className="pl-12 py-2.5 text-base border-2 focus:border-accent-500 rounded-xl bg-background shadow-sm"
                 />
               </div>
             
                 <div className="flex items-center gap-3">
                   <div className="w-36">
                     <Select value={yearLevelFilter} onValueChange={setYearLevelFilter}>
-                      <SelectTrigger className="border-2 rounded-xl px-3 py-2 bg-white font-medium text-slate-900 shadow-sm">
+                      <SelectTrigger className="border-2 rounded-xl px-3 py-2 bg-background font-medium shadow-sm">
                         {yearLevelFilter === "all" ? "All Years" : `${yearLevelFilter}st Year`}
                       </SelectTrigger>
                       <SelectContent>
@@ -258,7 +258,7 @@ const Students = () => {
 
                   <div className="w-40">
                     <Select value={statusFilter} onValueChange={setStatusFilter}>
-                      <SelectTrigger className="border-2 rounded-xl px-3 py-2 bg-white font-medium text-slate-900 shadow-sm">
+                      <SelectTrigger className="border-2 rounded-xl px-3 py-2 bg-background font-medium shadow-sm">
                         {statusFilter === "all" ? "All Status" : statusFilter}
                       </SelectTrigger>
                       <SelectContent>
@@ -272,7 +272,7 @@ const Students = () => {
 
                   <div className="w-40">
                     <Select value={sectionFilter} onValueChange={setSectionFilter}>
-                      <SelectTrigger className="border-2 rounded-xl px-3 py-2 bg-white font-medium text-slate-900 shadow-sm">
+                      <SelectTrigger className="border-2 rounded-xl px-3 py-2 bg-background font-medium shadow-sm">
                         {sectionFilter === "all" ? "All Sections" : `Section ${sectionFilter}`}
                       </SelectTrigger>
                       <SelectContent>
@@ -286,7 +286,7 @@ const Students = () => {
 
                   <div className="w-44">
                     <Select value={sortOption} onValueChange={setSortOption}>
-                      <SelectTrigger className="border-2 rounded-xl px-4 py-2.5 bg-white font-medium text-slate-900 shadow-sm">
+                      <SelectTrigger className="border-2 rounded-xl px-4 py-2.5 bg-background font-medium shadow-sm">
                         {sortOption === "name_asc" && "Name A → Z"}
                         {sortOption === "name_desc" && "Name Z → A"}
                         {sortOption === "id_asc" && "ID A → Z"}
@@ -327,8 +327,8 @@ const Students = () => {
                     key={student.id}
                     className={`rounded-2xl border-2 transition-all duration-300 flex flex-col overflow-hidden ${
                       student.status === "inactive"
-                        ? "bg-slate-50 border-slate-200 opacity-70"
-                        : "bg-gradient-to-br from-white to-slate-50 border-accent-200 hover:border-accent-400 hover:shadow-lg"
+                        ? "bg-muted/50 border-muted opacity-70"
+                        : "bg-gradient-to-br from-card to-muted/30 border-accent-200 hover:border-accent-400 hover:shadow-lg"
                     }`}
                   >
                     {/* Card Header */}
@@ -340,7 +340,7 @@ const Students = () => {
                           <User className="h-7 w-7 text-white" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="font-bold text-lg text-slate-900">{student.name}</p>
+                          <p className="font-bold text-lg">{student.name}</p>
                           <p className="text-sm text-muted-foreground truncate">{student.email}</p>
                           <p className="text-xs text-muted-foreground mt-1">Year {student.yearLevel} • Section {student.section}</p>
                         </div>
@@ -359,15 +359,15 @@ const Students = () => {
                     <div className={`px-5 py-3 ${
                       student.status === "active"
                         ? "bg-gradient-to-r from-primary/5 to-accent/5 border-t border-primary/10"
-                        : "bg-slate-100 border-t border-slate-200"
+                        : "bg-muted/30 border-t border-muted"
                     }`}>
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="text-xs font-semibold text-slate-600 mb-1">Student ID</p>
-                          <p className="text-sm font-medium text-slate-900">{student.studentId}</p>
+                          <p className="text-xs font-semibold text-muted-foreground mb-1">Student ID</p>
+                          <p className="text-sm font-medium">{student.studentId}</p>
                         </div>
                         <div className="text-right">
-                          <div className="flex items-center gap-1 text-sm font-medium text-slate-900 mb-1">
+                          <div className="flex items-center gap-1 text-sm font-medium mb-1">
                             <BookOpen className="h-4 w-4 text-primary" />
                             <span>{student.enrolledCourses.length} courses</span>
                           </div>
@@ -383,7 +383,7 @@ const Students = () => {
 
                     {/* Card Actions */}
                     <div className={`px-5 py-4 border-t ${
-                      student.status === "inactive" ? "border-slate-200 bg-white" : "border-accent-100 bg-slate-50"
+                      student.status === "inactive" ? "border-muted bg-muted/30" : "border-accent-100 bg-card/50"
                     }`}>
                       <div className="flex gap-2">
                         <Button
@@ -418,8 +418,8 @@ const Students = () => {
                     key={student.id}
                     className={`rounded-2xl border-2 transition-all duration-300 flex items-center justify-between p-4 ${
                       student.status === "inactive"
-                        ? "bg-slate-50 border-slate-200 opacity-80"
-                        : "bg-white border-accent-100 hover:border-accent-300 hover:shadow-md"
+                        ? "bg-muted/50 border-muted opacity-80"
+                        : "bg-card border-accent-100 hover:border-accent-300 hover:shadow-md"
                     }`}
                   >
                     <div className="flex items-center gap-4 flex-1">
@@ -430,7 +430,7 @@ const Students = () => {
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2">
-                          <p className="font-semibold text-lg text-slate-900">{student.name}</p>
+                          <p className="font-semibold text-lg">{student.name}</p>
                           <Badge variant="outline" className="text-xs flex-shrink-0">{student.studentId}</Badge>
                         </div>
                         <p className="text-sm text-muted-foreground">{student.email}</p>
@@ -440,7 +440,7 @@ const Students = () => {
 
                     <div className="flex items-center gap-3 flex-shrink-0">
                       <div className="text-right">
-                        <div className="flex items-center gap-1 text-sm font-medium text-slate-900">
+                        <div className="flex items-center gap-1 text-sm font-medium">
                           <BookOpen className="h-4 w-4" />
                           <span>{student.enrolledCourses.length} courses</span>
                         </div>

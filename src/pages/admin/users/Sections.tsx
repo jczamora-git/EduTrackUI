@@ -168,10 +168,10 @@ const Sections = () => {
         </div>
 
         <Card className="shadow-lg border-0">
-          <CardHeader className="bg-gradient-to-r from-slate-50 to-slate-100 border-b pb-6">
+          <CardHeader className="bg-gradient-to-r from-muted/50 to-muted border-b pb-6">
             <div className="flex items-center justify-between">
               <div>
-                <CardTitle className="text-2xl font-bold text-slate-900">All Sections ({filteredSections.length})</CardTitle>
+                <CardTitle className="text-2xl font-bold">All Sections ({filteredSections.length})</CardTitle>
                 <CardDescription className="text-base">View and manage your class sections</CardDescription>
               </div>
               <div className="flex items-center gap-3">
@@ -186,7 +186,7 @@ const Sections = () => {
                 </div>
                 <div className="w-40">
                   <Select value={statusFilter} onValueChange={(v) => setStatusFilter(v)}>
-                    <SelectTrigger className="border-2 focus:border-accent-500 rounded-lg px-3 py-2 bg-white">
+                    <SelectTrigger className="border-2 focus:border-accent-500 rounded-lg px-3 py-2 bg-background">
                       <SelectValue>{statusFilter === "all" ? "All Status" : statusFilter === "active" ? "Active Only" : "Inactive Only"}</SelectValue>
                     </SelectTrigger>
                     <SelectContent>
@@ -218,8 +218,8 @@ const Sections = () => {
                     key={section.id}
                     className={`rounded-2xl border-2 transition-all duration-300 p-5 flex items-center justify-between ${
                       section.status === "inactive"
-                        ? "bg-slate-50 border-slate-200 opacity-70"
-                        : "bg-gradient-to-br from-white to-slate-50 border-accent-200 hover:border-accent-400 hover:shadow-md"
+                        ? "bg-muted/50 border-muted opacity-70"
+                        : "bg-gradient-to-br from-card to-muted/30 border-accent-200 hover:border-accent-400 hover:shadow-md"
                     }`}
                   >
                     <div className="flex items-center gap-4 flex-1">
@@ -232,7 +232,7 @@ const Sections = () => {
                       </div>
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-1">
-                          <p className="font-bold text-lg text-slate-900">{section.name}</p>
+                          <p className="font-bold text-lg">{section.name}</p>
                           {section.description && (
                             <p className="text-sm text-muted-foreground hidden sm:inline-block">{section.description}</p>
                           )}
@@ -249,7 +249,7 @@ const Sections = () => {
                         className={`font-semibold px-3 py-1 shrink-0 ${
                           section.status === "active"
                             ? "bg-gradient-to-r from-primary to-accent text-white"
-                            : "bg-slate-200 text-slate-700"
+                            : "bg-muted/30 text-muted-foreground"
                         }`}
                       >
                         {section.status.charAt(0).toUpperCase() + section.status.slice(1)}
@@ -286,8 +286,8 @@ const Sections = () => {
                     key={section.id}
                     className={`rounded-2xl border-2 transition-all duration-300 flex flex-col justify-between overflow-hidden ${
                       section.status === "inactive"
-                        ? "bg-slate-50 border-slate-200 opacity-70 hover:opacity-80"
-              : "bg-gradient-to-br from-white to-slate-50 border-accent-200 hover:border-accent-400 hover:shadow-xl"
+                        ? "bg-muted/50 border-muted opacity-70 hover:opacity-80"
+              : "bg-gradient-to-br from-card to-muted/30 border-accent-200 hover:border-accent-400 hover:shadow-xl"
                     }`}
                   >
                     {/* Main content - dim when inactive */}
@@ -302,7 +302,7 @@ const Sections = () => {
                             <Grid3x3 className="h-6 w-6 text-white" />
                           </div>
                           <div>
-                            <p className="font-bold text-xl text-slate-900">{section.name}</p>
+                            <p className="font-bold text-xl">{section.name}</p>
                             {section.description && (
                               <p className="text-sm text-muted-foreground line-clamp-1">{section.description}</p>
                             )}
@@ -313,7 +313,7 @@ const Sections = () => {
                           className={`font-semibold px-3 py-1 ${
                             section.status === "active"
                               ? "bg-gradient-to-r from-primary to-accent text-white"
-                              : "bg-slate-200 text-slate-700"
+                              : "bg-muted/30 text-muted-foreground"
                           }`}
                         >
                           {section.status.charAt(0).toUpperCase() + section.status.slice(1)}
@@ -323,14 +323,14 @@ const Sections = () => {
                       <div className={`rounded-xl p-4 mb-4 ${
                         section.status === "active"
                           ? "bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20"
-                          : "bg-slate-100 border border-slate-200"
+                          : "bg-muted/50 border border-muted"
                       }`}>
                         <div className="flex justify-between items-center">
-                          <span className="text-sm font-semibold text-slate-600">Total Students</span>
+                          <span className="text-sm font-semibold text-muted-foreground">Total Students</span>
                           <span className={`text-3xl font-bold ${
                             section.status === "active"
                               ? "bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
-                              : "text-slate-600"
+                              : "text-muted-foreground"
                           }`}>
                             {section.students.length}
                           </span>
@@ -341,7 +341,7 @@ const Sections = () => {
 
                     {/* Actions - keep enabled even when section is inactive */}
                     <div className={`mt-2 p-5 border-t ${
-                      section.status === "inactive" ? "border-slate-200 bg-white" : "border-accent-100 bg-slate-50"
+                      section.status === "inactive" ? "border-muted bg-muted/30" : "border-accent-100 bg-card/50"
                     }`}>
                       <div className="flex gap-3">
                         <Button
@@ -390,7 +390,7 @@ const Sections = () => {
             </DialogHeader>
             <div className="space-y-5 px-2">
               <div>
-                <Label htmlFor="name" className="font-semibold text-lg text-slate-900">Section Name *</Label>
+                <Label htmlFor="name" className="font-semibold text-lg">Section Name *</Label>
                 <Input
                   id="name"
                   value={form.name}
@@ -401,7 +401,7 @@ const Sections = () => {
               </div>
 
               <div>
-                <Label htmlFor="description" className="font-semibold text-lg text-slate-900">Description</Label>
+                <Label htmlFor="description" className="font-semibold text-lg">Description</Label>
                 <Input
                   id="description"
                   value={form.description}

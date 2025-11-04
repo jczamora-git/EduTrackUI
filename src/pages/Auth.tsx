@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { GraduationCap, AlertCircle } from "lucide-react";
+import { AlertCircle } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
@@ -39,10 +39,9 @@ const Auth = () => {
     <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-primary/5 via-accent/5 to-success/5">
       <div className="w-full max-w-md">
         <Link to="/" className="flex items-center justify-center gap-2 mb-8 hover:opacity-80 transition-opacity">
-          <GraduationCap className="h-8 w-8 text-primary" />
-          <span className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            EduTrack
-          </span>
+          {/* Replace the icon with the project logo. Put your logo file at `public/logo.png` or
+              `src/assets/logo.png` and update the src path below if needed. */}
+          <img src="../public/logo.png" alt="EduTrack logo" className="h-12 object-contain" />
         </Link>
 
         <Tabs defaultValue="signin" className="w-full">

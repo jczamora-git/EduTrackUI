@@ -268,10 +268,10 @@ const Teachers = () => {
         </div>
 
         <Card className="shadow-lg border-0">
-          <CardHeader className="bg-gradient-to-r from-slate-50 to-slate-100 border-b pb-6">
+          <CardHeader className="bg-gradient-to-r from-muted/50 to-muted border-b pb-6">
             <div className="flex items-center justify-between">
               <div>
-                <CardTitle className="text-2xl font-bold text-slate-900">All Teachers ({filteredTeachers.length})</CardTitle>
+                <CardTitle className="text-2xl font-bold">All Teachers ({filteredTeachers.length})</CardTitle>
                 <CardDescription className="text-base">Faculty members and their course assignments</CardDescription>
               </div>
               <div className="flex items-center gap-3">
@@ -286,7 +286,7 @@ const Teachers = () => {
                 </div>
                 <div className="w-40">
                   <Select value={statusFilter} onValueChange={setStatusFilter}>
-                    <SelectTrigger className="border-2 focus:border-accent-500 rounded-lg px-3 py-2 bg-white">
+                    <SelectTrigger className="border-2 focus:border-accent-500 rounded-lg px-3 py-2 bg-background">
                       <SelectValue>{statusFilter === "all" ? "All Status" : statusFilter.charAt(0).toUpperCase() + statusFilter.slice(1)}</SelectValue>
                     </SelectTrigger>
                     <SelectContent>
@@ -318,8 +318,8 @@ const Teachers = () => {
                     key={teacher.id}
                     className={`rounded-2xl border-2 transition-all duration-300 flex flex-col overflow-hidden ${
                       teacher.status === "inactive"
-                        ? "bg-slate-50 border-slate-200 opacity-70"
-                        : "bg-gradient-to-br from-white to-slate-50 border-accent-200 hover:border-accent-400 hover:shadow-xl"
+                        ? "bg-muted/50 border-muted opacity-70"
+                        : "bg-gradient-to-br from-card to-muted/30 border-accent-200 hover:border-accent-400 hover:shadow-xl"
                     }`}
                   >
                     <div className={teacher.status === "inactive" ? "p-5 opacity-60 pointer-events-none" : "p-5"}>
@@ -329,7 +329,7 @@ const Teachers = () => {
                             <GraduationCap className="h-6 w-6 text-white" />
                           </div>
                           <div>
-                            <p className="font-bold text-lg text-slate-900">{teacher.firstName} {teacher.lastName}</p>
+                            <p className="font-bold text-lg">{teacher.firstName} {teacher.lastName}</p>
                             <p className="text-sm text-muted-foreground">{teacher.email}</p>
                           </div>
                         </div>
@@ -344,7 +344,7 @@ const Teachers = () => {
                         </Badge>
                         <Badge 
                           variant="outline" 
-                          className={`font-semibold px-3 py-1 ${teacher.status === "active" ? "bg-success/10 text-success border-success/20" : "bg-slate-100 text-slate-600"}`}
+                          className={`font-semibold px-3 py-1 ${teacher.status === "active" ? "bg-success/10 text-success border-success/20" : "bg-muted/30 text-muted-foreground"}`}
                         >
                           {teacher.status.charAt(0).toUpperCase() + teacher.status.slice(1)}
                         </Badge>
@@ -354,12 +354,12 @@ const Teachers = () => {
                         <div className="pt-3 border-t border-accent-100">
                           <div className="flex items-center gap-2 mb-3">
                             <BookOpen className="h-4 w-4 text-primary" />
-                            <span className="font-semibold text-sm text-slate-900">{teacher.assignedCourses.length} Course{teacher.assignedCourses.length !== 1 ? 's' : ''}</span>
+                            <span className="font-semibold text-sm">{teacher.assignedCourses.length} Course{teacher.assignedCourses.length !== 1 ? 's' : ''}</span>
                           </div>
                           <div className="space-y-2">
                             {teacher.assignedCourses.slice(0, 3).map((ac, i) => (
-                              <div key={i} className="p-2 bg-slate-100 rounded-lg">
-                                <p className="font-semibold text-xs text-slate-900">{ac.course}</p>
+                                <div key={i} className="p-2 bg-card/50 rounded-lg">
+                                <p className="font-semibold text-xs">{ac.course}</p>
                                 {ac.sections.length > 0 && (
                                   <div className="flex flex-wrap gap-1 mt-1">
                                     {ac.sections.map((s) => (
@@ -379,7 +379,7 @@ const Teachers = () => {
                       )}
                     </div>
 
-                    <div className="mt-auto p-5 border-t border-accent-100 bg-slate-50">
+                    <div className="mt-auto p-5 border-t border-accent-100 bg-muted/30">
                       <div className="flex gap-3">
                         <Button
                           variant="outline"
@@ -414,8 +414,8 @@ const Teachers = () => {
                   key={teacher.id}
                   className={`p-5 border-2 rounded-2xl transition-all duration-300 ${
                     teacher.status === "inactive"
-                      ? "bg-slate-50 border-slate-200 opacity-70"
-                      : "bg-white border-accent-100 hover:shadow-md hover:border-accent-300"
+                      ? "bg-muted/50 border-muted opacity-70"
+                      : "bg-card border-accent-100 hover:shadow-md hover:border-accent-300"
                   }`}
                 >
                   {/* Header: Teacher Info */}
@@ -427,7 +427,7 @@ const Teachers = () => {
                         </div>
                         <div className="flex-1">
                           <div className="flex items-center gap-3 mb-1">
-                            <p className="font-bold text-lg text-slate-900">{teacher.firstName} {teacher.lastName}</p>
+                            <p className="font-bold text-lg">{teacher.firstName} {teacher.lastName}</p>
                             <Badge variant="outline" className="text-xs font-semibold bg-gradient-to-r from-primary/10 to-accent/10 text-primary border border-primary/20">
                               {teacher.employeeId}
                             </Badge>
@@ -454,7 +454,7 @@ const Teachers = () => {
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                           {teacher.assignedCourses.map((ac, i) => (
-                            <div key={i} className="p-3 bg-slate-50 rounded-lg border border-border/30">
+                            <div key={i} className="p-3 bg-card/50 rounded-lg border border-border/30">
                               <div className="flex items-start justify-between mb-2">
                                 <div className="flex-1">
                                   <p className="font-semibold text-sm text-foreground">{ac.course}</p>

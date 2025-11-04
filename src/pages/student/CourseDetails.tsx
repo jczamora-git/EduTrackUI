@@ -86,7 +86,7 @@ const CourseDetails = () => {
             <CardContent>
               <div className="grid grid-cols-3 gap-4">
                 {/* Completion Rate */}
-                <div className="text-center p-3 bg-white/50 rounded-lg border border-primary/20">
+                <div className="text-center p-3 bg-card/50 rounded-lg border border-primary/20">
                   <p className="text-sm text-muted-foreground mb-1">Completion</p>
                   <p className="text-2xl font-bold text-primary">{courseSummary.completionRate}%</p>
                   <p className="text-xs text-muted-foreground mt-1">
@@ -95,7 +95,7 @@ const CourseDetails = () => {
                 </div>
 
                 {/* Average Score */}
-                <div className="text-center p-3 bg-white/50 rounded-lg border border-primary/20">
+                <div className="text-center p-3 bg-card/50 rounded-lg border border-primary/20">
                   <p className="text-sm text-muted-foreground mb-1">Average Score</p>
                   <p className="text-2xl font-bold text-primary">
                     {courseSummary.avgScore > 0 ? courseSummary.avgScore.toFixed(0) : "—"}
@@ -106,7 +106,7 @@ const CourseDetails = () => {
                 </div>
 
                 {/* Pending Items */}
-                <div className="text-center p-3 bg-white/50 rounded-lg border border-primary/20">
+                <div className="text-center p-3 bg-card/50 rounded-lg border border-primary/20">
                   <p className="text-sm text-muted-foreground mb-1">Pending</p>
                   <p className="text-2xl font-bold text-amber-600">{activities.length - courseSummary.graded}</p>
                   <p className="text-xs text-muted-foreground mt-1">

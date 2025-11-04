@@ -85,28 +85,28 @@ const MyActivities = () => {
           <CardContent>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {/* Total Activities */}
-              <div className="text-center p-3 bg-white/50 rounded-lg border border-primary/20">
+              <div className="text-center p-3 bg-card/50 rounded-lg border border-primary/20">
                 <p className="text-sm text-muted-foreground mb-1">Total</p>
                 <p className="text-2xl font-bold text-primary">{activities.length}</p>
                 <p className="text-xs text-muted-foreground mt-1">activities</p>
               </div>
 
               {/* Graded */}
-              <div className="text-center p-3 bg-white/50 rounded-lg border border-success/20">
+              <div className="text-center p-3 bg-card/50 rounded-lg border border-success/20">
                 <p className="text-sm text-muted-foreground mb-1">Graded</p>
                 <p className="text-2xl font-bold text-success">{activityStats.graded}</p>
                 <p className="text-xs text-muted-foreground mt-1">completed</p>
               </div>
 
               {/* Pending */}
-              <div className="text-center p-3 bg-white/50 rounded-lg border border-amber-200">
+              <div className="text-center p-3 bg-card/50 rounded-lg border border-amber-200">
                 <p className="text-sm text-muted-foreground mb-1">Pending</p>
                 <p className="text-2xl font-bold text-amber-600">{activityStats.pending}</p>
                 <p className="text-xs text-muted-foreground mt-1">awaiting</p>
               </div>
 
               {/* Completion Rate */}
-              <div className="text-center p-3 bg-white/50 rounded-lg border border-primary/20">
+              <div className="text-center p-3 bg-card/50 rounded-lg border border-primary/20">
                 <p className="text-sm text-muted-foreground mb-1">Completion</p>
                 <p className="text-2xl font-bold text-primary">{activityStats.completionRate}%</p>
                 <p className="text-xs text-muted-foreground mt-1">overall</p>
